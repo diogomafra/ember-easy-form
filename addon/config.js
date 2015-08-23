@@ -1,4 +1,6 @@
-Ember.EasyForm.Config = Ember.Namespace.create({
+import Ember from 'ember';
+
+export default {
   _wrappers: {
     'default': {
       formClass: '',
@@ -7,10 +9,10 @@ Ember.EasyForm.Config = Ember.Namespace.create({
       errorClass: 'error',
       hintClass: 'hint',
       labelClass: '',
-      inputTemplate: 'easyForm/input',
-      errorTemplate: 'easyForm/error',
-      labelTemplate: 'easyForm/label',
-      hintTemplate: 'easyForm/hint',
+      inputTemplate: 'components/easy-form/form-input',
+      errorTemplate: 'components/easy-form/error-field',
+      labelTemplate: 'components/easy-form/label-field',
+      hintTemplate: 'components/easy-form/hint-field',
       wrapControls: false,
       controlsWrapperClass: '',
       buttonClass: ''
@@ -39,4 +41,4 @@ Ember.EasyForm.Config = Ember.Namespace.create({
   getTemplate: function(name) {
     return this._templates[name];
   }
-});
+};

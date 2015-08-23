@@ -1,6 +1,7 @@
 import Ember from 'ember';
 import { moduleForComponent, test } from 'ember-qunit';
 import hbs from 'htmlbars-inline-precompile';
+import config from 'ember-easy-form/config';
 
 moduleForComponent('form-input', 'Integration | Component | form input', {
   integration: true,
@@ -269,18 +270,15 @@ test('does not show hint span when there is no hint', function(assert) {
 //   ok(view.$().find('span.my-error').get(0), 'errorClass not defined');
 // });
 
-// test('uses the defined template name', function() {
-//   Ember.TEMPLATES['custom-input-template'] = templateFor('My custom template | {{label-field propertyBinding="view.property"}}');
-//   Ember.EasyForm.Config.registerWrapper('my_wrapper', {inputTemplate: 'custom-input-template'});
+test('uses the defined template name', function(assert) {
+  this.container.register('template:custom-input-template', hbs`My custom template | {{label-field property=propertyName text=labelText}}`);
+  config.registerWrapper('my_wrapper', {inputTemplate: 'custom-input-template'});
 
-//   view = Ember.View.create({
-//     template: templateFor('{{#form-for model wrapper="my_wrapper"}}{{input firstName}}{{/form-for}}'),
-//     container: container,
-//     controller: controller
-//   });
-//   append(view);
-//   equal(view.$().text(), 'My custom template | First name');
-// });
+  this.render(hbs`{{#form-for model wrapper="my_wrapper"}}{{form-input "firstName"}}{{/form-for}}`);
+
+  assert.equal(this.$().text(), 'My custom template | First name');
+});
+
 
 // test('sets input attributes property as bindings', function() {
 //   view = Ember.View.create({
@@ -332,16 +330,6 @@ test('does not show hint span when there is no hint', function(assert) {
 //   equal(view.$().find('.hint').text(), controller.get('hint'));
 // });
 
-// test('defaults the name property', function() {
-//   view = Ember.View.create({
-//     template: templateFor('{{input firstName}}'),
-//     container: container,
-//     controller: controller
-//   });
-//   append(view);
-
-//   equal(view.$().find('input').prop('name'), "firstName");
-// });
 
 test('defaults the name property', function(assert) {
   this.render(hbs`{{#form-for model}}{{form-input "firstName"}}{{/form-for}}`);

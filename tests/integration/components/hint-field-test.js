@@ -1,6 +1,7 @@
 import { moduleForComponent, test } from 'ember-qunit';
 import { skip } from 'qunit';
 import hbs from 'htmlbars-inline-precompile';
+import config from 'ember-easy-form/config';
 
 moduleForComponent('hint-field', 'Integration | Component | hint field', {
   integration: true
@@ -18,60 +19,19 @@ skip('does not render a hint field without custom text', function(assert) {
   assert.equal(this.$().find('span.hint').length, '0', 'The hint element should not have been created');
 });
 
+test('uses the wrapper config', function(assert) {
+  config.registerWrapper('my_wrapper', {hintClass: 'my-hint'});
 
-// test('uses the wrapper config', function() {
-//   Ember.EasyForm.Config.registerWrapper('my_wrapper', {hintClass: 'my-hint'});
-//   view = Ember.View.create({
-//     template: templateFor('{{#form-for controller wrapper="my_wrapper"}}{{hint-field firstName text="Some text"}}{{/form-for}}'),
-//     container: container,
-//     controller: controller
-//   });
-//   append(view);
-//   ok(view.$().find('span.my-hint').get(0), 'hintClass not defined');
-// });
+  this.render(hbs`{{#form-for controller wrapper="my_wrapper"}}{{hint-field firstName text="Some text"}}{{/form-for}}`);
 
-// test('uses the defined template name', function() {
-//   Ember.TEMPLATES['custom-hint-template'] = templateFor('My custom hint | {{view.hintText}}');
-//   Ember.EasyForm.Config.registerWrapper('my_wrapper', {hintTemplate: 'custom-hint-template'});
+  assert.ok(this.$().find('span.my-hint').get(0), 'hintClass not defined');
+});
 
-//   view = Ember.View.create({
-//     template: templateFor('{{#form-for controller wrapper="my_wrapper"}}{{hint-field firstName text="My text"}}{{/form-for}}'),
-//     container: container,
-//     controller: controller
-//   });
-//   append(view);
-//   equal(view.$().text(), "My custom hint | My text");
-// });
+test('uses the defined template name', function(assert) {
+  this.container.register('template:custom-hint-template', hbs`My custom hint | {{view.hintText}}`);
+  config.registerWrapper('my_wrapper', {hintTemplate: 'custom-hint-template'});
 
+  this.render(hbs`{{#form-for controller wrapper="my_wrapper"}}{{hint-field firstName text="My text"}}{{/form-for}}`);
 
-
-
-
-
-
-// module('hint-field helpers', {
-//   setup: function() {
-//     container = new Ember.Container();
-//     container.optionsForType('template', { instantiate: false });
-//     container.resolver = function(fullName) {
-//       var name = fullName.split(':')[1];
-//       return Ember.TEMPLATES[name];
-//     };
-//     model =  { firstName: 'Brian' };
-//     controller = Ember.ObjectController.create();
-//     controller.set('content', model);
-//   },
-//   teardown: function() {
-//     Ember.run(function() {
-//       view.destroy();
-//       view = null;
-//     });
-//     Ember.lookup = original_lookup;
-//   }
-// });
-
-// var append = function(view) {
-//   Ember.run(function() {
-//     view.appendTo('#qunit-fixture');
-//   });
-// };
+  assert.equal(this.$().text(), "My custom hint | My text");
+});

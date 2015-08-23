@@ -1,11 +1,11 @@
 import Ember from 'ember';
-import layout from 'ember-easy-form/templates/components/hint-field';
+import WrapperMixin from 'ember-easy-form/wrapper-mixin';
 
-var HintFieldComponent = Ember.Component.extend({
+var HintFieldComponent = Ember.Component.extend(WrapperMixin, {
   tagName: 'span',
-  classNames: ['hint'],
-  layout: layout,
-  text: Ember.computed.reads('attrs.text')
+  hintText: Ember.computed.reads('attrs.text'),
+  classNameBindings: ['wrapperConfig.hintClass'],
+  layoutName: Ember.computed.oneWay('wrapperConfig.hintTemplate')
 });
 
 HintFieldComponent.reopenClass({

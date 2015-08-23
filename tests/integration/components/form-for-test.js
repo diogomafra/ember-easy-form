@@ -1,5 +1,6 @@
 import { moduleForComponent, test } from 'ember-qunit';
 import hbs from 'htmlbars-inline-precompile';
+import config from 'ember-easy-form/config';
 
 moduleForComponent('form-for', 'Integration | Component | form for', {
   integration: true
@@ -26,15 +27,13 @@ test('renders a form element', function(assert) {
 
 
 
-// test('uses the defined wrapper', function() {
-//   Ember.EasyForm.Config.registerWrapper('my_wrapper', {formClass: 'my-form-class'});
-//   view = Ember.View.create({
-//     template: templateFor('{{#form-for controller wrapper="my_wrapper"}}{{/form-for}}'),
-//     controller: controller
-//   });
-//   append(view);
-//   equal(view.$().find('form').attr('class'), 'ember-view my-form-class');
-// });
+test('uses the defined wrapper', function(assert) {
+  config.registerWrapper('my_wrapper', {formClass: 'my-form-class'});
+
+  this.render(hbs`{{#form-for controller wrapper="my_wrapper"}}{{/form-for}}`);
+
+  assert.equal(this.$().find('form').attr('class'), 'ember-view my-form-class');
+});
 
 // test('submitting with invalid model does not call submit action on controller', function() {
 //   Ember.run(function() {
