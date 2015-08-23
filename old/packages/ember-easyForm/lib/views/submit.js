@@ -1,8 +1,8 @@
 Ember.EasyForm.Submit = Ember.EasyForm.BaseView.extend({
-  tagName: 'input',
+  // tagName: 'input',
   attributeBindings: ['type', 'value', 'disabled'],
   classNameBindings: ['wrapperConfig.buttonClass'],
-  type: 'submit',
+  // type: 'submit',
   disabled: function() {
     return !this.get('formForModel.isValid');
   }.property('formForModel.isValid'),

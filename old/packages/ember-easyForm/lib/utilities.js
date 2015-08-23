@@ -1,6 +1,3 @@
-Ember.EasyForm.humanize = function(string) {
-  return string.underscore().split('_').join(' ').capitalize();
-};
 
 Ember.EasyForm.eachTranslatedAttribute = function(object, fn) {
   var isTranslatedAttribute = /(.+)Translation$/,

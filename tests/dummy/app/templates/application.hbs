@@ -1,3 +1,17 @@
 <h2 id="title">Welcome to Ember</h2>
 
 {{outlet}}
+
+
+{{#form-for model}}
+Dentro do form
+{{form-input "firstName"}}
+{{form-input "lastName"}}
+{{submit-button}}
+{{/form-for}}
+
+
+<div>
+Label:
+{{label-field text="Algum label"}}
+</div>
