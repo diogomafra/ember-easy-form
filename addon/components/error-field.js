@@ -1,13 +1,20 @@
 import Ember from 'ember';
-import {humanize} from 'ember-easy-form/utilities';
+import WrapperMixin from 'ember-easy-form/wrapper-mixin';
 
-var ErrorFieldComponent = Ember.Component.extend({
+var ErrorFieldComponent = Ember.Component.extend(WrapperMixin, {
   tagName: 'span',
-  layoutName: 'components/easy-form/error-field',
-
-  text: Ember.computed('attrs.text', 'attrs.propertyName', function() {
-    return this.get('attrs.text') || humanize(this.get('attrs.propertyName'));
-  })
+  classNames: ['error'],
+  classNameBindings: ['wrapperConfig.errorClass'],
+  layoutName: Ember.computed.oneWay('wrapperConfig.errorTemplate'),
+  errorText: Ember.computed('errors.[]', function() {
+    var errors = this.get('errors');
+    return errors ? errors[0] : '';
+  }),
+  init() {
+    this._super(...arguments);
+    var propertyName = this.get('propertyName');
+    Ember.Binding.from('formForModel.errors.' + propertyName).to('errors').connect(this);
+  }
 });
 
 ErrorFieldComponent.reopenClass({
