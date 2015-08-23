@@ -1,273 +1,167 @@
+import Ember from 'ember';
 import { moduleForComponent, test } from 'ember-qunit';
 import hbs from 'htmlbars-inline-precompile';
 
 moduleForComponent('input-field', 'Integration | Component | input field', {
-  integration: true
+  integration: true,
+  beforeEach: function() {
+    let countries = [{ id: 1, name: 'South Aftica' }, { id: 2, name: 'United States' }];
+    this.set('optionsForCountry', countries);
+    this.set('model', {
+      firstName: 'Brian',
+      lastName: 'Cardarella',
+      country: countries[1]
+    });
+  }
 });
 
-test('it renders', function(assert) {
+test('render text input and sets value propertly', function(assert) {
+  this.render(hbs`{{#form-for model}}{{input-field "firstName"}}{{/form-for}}`);
 
-  // Set any properties with this.set('myProperty', 'value');
-  // Handle any actions with this.on('myAction', function(val) { ... });
+  assert.equal(this.$().find('input').attr('type'), 'text');
+  assert.equal(this.$().find('input').val(), 'Brian');
+});
 
-  this.render(hbs`{{input-field}}`);
+test('changes the text when the model value changed', function(assert) {
+  this.render(hbs`{{#form-for model}}{{input-field "firstName"}}{{/form-for}}`);
 
-  assert.equal(this.$().text().trim(), '');
+  assert.equal(this.$().find('input').attr('type'), 'text');
+  assert.equal(this.$().find('input').val(), 'Brian');
+  Ember.run(() => {
+    this.set('model.firstName', 'Diogo');
+  });
+  assert.equal(this.$().find('input').val(), 'Diogo');
+});
 
-  // // Template block usage:
-  // this.render(hbs`
-  //   {{#input-field}}
-  //     template block text
-  //   {{/input-field}}
-  // `);
+test('allows setting of input attributes', function(assert) {
+  this.render(hbs`{{#form-for model}}{{input-field "secret" type="hidden"}}{{/form-for}}`);
+  assert.equal(this.$().find('input').attr('type'), 'hidden');
+});
 
-  // assert.equal(this.$().text().trim(), 'template block text');
+test('auto sets input type to password if name includes password', function(assert) {
+  this.render(hbs`{{#form-for model}}{{input-field "passwordConfirmation"}}{{/form-for}}`);
+  assert.equal(this.$().find('input').attr('type'), 'password');
+});
+
+test('auto sets input type to password if forced password', function(assert) {
+  this.render(hbs`{{#form-for model}}{{input-field "token" as="password"}}{{/form-for}}`);
+  assert.equal(this.$().find('input').attr('type'), 'password');
+});
+
+test('auto sets input type to url if name includes url', function(assert) {
+  this.render(hbs`{{#form-for model}}{{input-field "url"}}{{/form-for}}`);
+  assert.equal(this.$().find('input').attr('type'), 'url');
+});
+
+test('auto sets input type to url if forced url', function(assert) {
+  this.render(hbs`{{#form-for model}}{{input-field "website" as="url"}}{{/form-for}}`);
+  assert.equal(this.$().find('input').attr('type'), 'url');
+});
+
+test('auto sets input type to url if name includes color', function(assert) {
+  this.render(hbs`{{#form-for model}}{{input-field "color"}}{{/form-for}}`);
+  assert.equal(this.$().find('input').attr('type'), 'color');
+});
+
+test('auto sets input type to url if forced to color', function(assert) {
+  this.render(hbs`{{#form-for model}}{{input-field "hue" as="color"}}{{/form-for}}`);
+  assert.equal(this.$().find('input').attr('type'), 'color');
+});
+
+test('auto sets input type to url if name includes tel', function(assert) {
+  this.render(hbs`{{#form-for model}}{{input-field "telephone"}}{{/form-for}}`);
+  assert.equal(this.$().find('input').attr('type'), 'tel');
+});
+
+test('auto sets input type to url if forced to tel', function(assert) {
+  this.render(hbs`{{#form-for model}}{{input-field "phoneNumber" as="tel"}}{{/form-for}}`);
+  assert.equal(this.$().find('input').attr('type'), 'tel');
+});
+
+test('auto sets input type to url if name includes search', function(assert) {
+  this.render(hbs`{{#form-for model}}{{input-field "search"}}{{/form-for}}`);
+  assert.equal(this.$().find('input').attr('type'), 'search');
+});
+
+test('auto sets input type to url if forced to search', function(assert) {
+  this.render(hbs`{{#form-for model}}{{input-field "query" as="search"}}{{/form-for}}`);
+  assert.equal(this.$().find('input').attr('type'), 'search');
+});
+
+test('auto sets input type to url if name includes email', function(assert) {
+  this.render(hbs`{{#form-for model}}{{input-field "email"}}{{/form-for}}`);
+  assert.equal(this.$().find('input').attr('type'), 'email');
+});
+
+test('auto sets input type to url if forced to email', function(assert) {
+  this.render(hbs`{{#form-for model}}{{input-field "receivedAt" as="email"}}{{/form-for}}`);
+  assert.equal(this.$().find('input').attr('type'), 'email');
+});
+
+test('auto sets input type to number if property meta attribute is a number', function(assert) {
+  let model = this.get('model');
+  model['metaForProperty'] = function(property) {
+    var obj = { 'type': 'number' };
+    if (property === 'age') {
+      return obj;
+    }
+  };
+  Ember.set(model,'age', 30);
+
+  this.render(hbs`{{#form-for model}}{{input-field "age"}}{{/form-for}}`);
+
+  assert.equal(this.$().find('input').attr('type'), 'number');
+});
+
+test('auto sets input type to number if property is a number', function(assert) {
+  this.set('model.age', 30);
+  this.render(hbs`{{#form-for model}}{{input-field "age"}}{{/form-for}}`);
+  assert.equal(this.$().find('input').attr('type'), 'number');
+});
+
+test('auto sets input type to date if property meta attribute is a date', function(assert) {
+  let model = this.get('model');
+  model['metaForProperty'] = function(property) {
+    var obj = { 'type': 'date' };
+    if (property === 'birthday') {
+      return obj;
+    }
+  };
+  Ember.set(model,'birthday', new Date());
+
+  this.render(hbs`{{#form-for model}}{{input-field "birthday"}}{{/form-for}}`);
+
+  assert.equal(this.$().find('input').attr('type'), 'date');
+});
+
+test('auto sets input type to checkbox if forced to checkbox', function(assert) {
+  this.set('model.alive', true);
+  this.render(hbs`{{#form-for model}}{{input-field "alive" as="checkbox"}}{{/form-for}}`);
+  assert.equal(this.$().find('input').attr('type'), 'checkbox');
+  assert.equal(this.$().find('input').is(':checked'), true);
+});
+
+test('auto sets input type to boolean if property meta attribute is a boolean', function(assert) {
+  let model = this.get('model');
+  model['metaForProperty'] = function(property) {
+    var obj = { 'type': 'boolean' };
+    if (property === 'old') {
+      return obj;
+    }
+  };
+  Ember.set(model,'old', false);
+
+  this.render(hbs`{{#form-for model}}{{input-field "old"}}{{/form-for}}`);
+
+  assert.equal(this.$().find('input').attr('type'), 'checkbox');
 });
 
 
-
-
-
-
-
-
-
-// test('render text input and sets value propertly', function() {
-//   view = Ember.View.create({
-//     template: templateFor('{{input-field firstName}}'),
-//     container: container,
-//     controller: controller
-//   });
-//   append(view);
-//   equal(view.$().find('input').attr('type'), 'text');
-//   equal(view.$().find('input').val(), 'Brian');
-// });
-
-// test('allows setting of input attributes', function() {
-//   view = Ember.View.create({
-//     template: templateFor('{{input-field secret type="hidden"}}'),
-//     container: container,
-//     controller: controller
-//   });
-//   append(view);
-//   equal(view.$().find('input').attr('type'), 'hidden');
-// });
-
-// test('auto sets input type to password if name includes password', function() {
-//   view = Ember.View.create({
-//     template: templateFor('{{input-field passwordConfirmation}}'),
-//     container: container,
-//     controller: controller
-//   });
-//   append(view);
-//   equal(view.$().find('input').attr('type'), 'password');
-// });
-
-// test('auto sets input type to password if forced to password', function() {
-//   view = Ember.View.create({
-//     template: templateFor('{{input-field token as="password"}}'),
-//     container: container,
-//     controller: controller
-//   });
-//   append(view);
-//   equal(view.$().find('input').attr('type'), 'password');
-// });
-
-// test('auto sets input type to url if name includes url', function() {
-//   view = Ember.View.create({
-//     template: templateFor('{{input-field url}}'),
-//     container: container,
-//     controller: controller
-//   });
-//   append(view);
-//   equal(view.$().find('input').attr('type'), 'url');
-// });
-
-// test('auto sets input type to url if forced to url', function() {
-//   view = Ember.View.create({
-//     template: templateFor('{{input-field website as="url"}}'),
-//     container: container,
-//     controller: controller
-//   });
-//   append(view);
-//   equal(view.$().find('input').attr('type'), 'url');
-// });
-
-// test('auto sets input type to color if name includes color', function() {
-//   view = Ember.View.create({
-//     template: templateFor('{{input-field color}}'),
-//     container: container,
-//     controller: controller
-//   });
-//   append(view);
-//   equal(view.$().find('input').attr('type'), 'color');
-// });
-
-// test('auto sets input type to color if forced to color', function() {
-//   view = Ember.View.create({
-//     template: templateFor('{{input-field hue as="color"}}'),
-//     container: container,
-//     controller: controller
-//   });
-//   append(view);
-//   equal(view.$().find('input').attr('type'), 'color');
-// });
-
-// test('auto sets input type to tel if name includes tel', function() {
-//   view = Ember.View.create({
-//     template: templateFor('{{input-field telephone}}'),
-//     container: container,
-//     controller: controller
-//   });
-//   append(view);
-//   equal(view.$().find('input').attr('type'), 'tel');
-// });
-
-// test('auto sets input type to tel if forced to tel', function() {
-//   view = Ember.View.create({
-//     template: templateFor('{{input-field phoneNumber as="tel"}}'),
-//     container: container,
-//     controller: controller
-//   });
-//   append(view);
-//   equal(view.$().find('input').attr('type'), 'tel');
-// });
-
-// test('auto sets input type to search if name includes search', function() {
-//   view = Ember.View.create({
-//     template: templateFor('{{input-field search}}'),
-//     container: container,
-//     controller: controller
-//   });
-//   append(view);
-//   equal(view.$().find('input').attr('type'), 'search');
-// });
-
-// test('auto sets input type to search if forced to search', function() {
-//   view = Ember.View.create({
-//     template: templateFor('{{input-field query as="search"}}'),
-//     container: container,
-//     controller: controller
-//   });
-//   append(view);
-//   equal(view.$().find('input').attr('type'), 'search');
-// });
-
-// test('auto sets input type to email if name includes email', function() {
-//   view = Ember.View.create({
-//     template: templateFor('{{input-field email}}'),
-//     container: container,
-//     controller: controller
-//   });
-//   append(view);
-//   equal(view.$().find('input').attr('type'), 'email');
-// });
-
-// test('auto sets input type to email if forced to email', function() {
-//   view = Ember.View.create({
-//     template: templateFor('{{input-field receivedAt as="email"}}'),
-//     container: container,
-//     controller: controller
-//   });
-//   append(view);
-//   equal(view.$().find('input').attr('type'), 'email');
-// });
-
-// test('auto sets input type to number if property meta attribute is a number', function() {
-//   model['metaForProperty'] = function(property) {
-//     var obj = { 'type': 'number' };
-//     if (property === 'age') {
-//       return obj;
-//     }
-//   };
-//   set(model,'age', 30);
-//   view = Ember.View.create({
-//     template: templateFor('{{input-field age}}'),
-//     container: container,
-//     controller: controller
-//   });
-//   append(view);
-//   equal(view.$().find('input').attr('type'), 'number');
-// });
-
-// test('auto sets input type to number if property is a number', function() {
-//   set(model,'age', 30);
-//   view = Ember.View.create({
-//     template: templateFor('{{input-field age}}'),
-//     container: container,
-//     controller: controller
-//   });
-//   append(view);
-//   equal(view.$().find('input').attr('type'), 'number');
-// });
-
-// test('auto sets input type to date if property meta attribute is a date', function() {
-//   model['metaForProperty'] = function(property) {
-//     var obj = { 'type': 'date' };
-//     if (property === 'birthday') {
-//       return obj;
-//     }
-//   };
-//   set(model,'birthday', new Date());
-//   view = Ember.View.create({
-//     template: templateFor('{{input-field birthday}}'),
-//     container: container,
-//     controller: controller
-//   });
-//   append(view);
-//   equal(view.$().find('input').attr('type'), 'date');
-// });
-
-// test('auto sets input type to checkbox if forced to checkbox', function() {
-//   set(model,'alive', true);
-//   view = Ember.View.create({
-//     template: templateFor('{{input-field alive as="checkbox"}}'),
-//     container: container,
-//     controller: controller
-//   });
-//   append(view);
-//   equal(view.$().find('input').attr('type'), 'checkbox');
-//   equal(view.$().find('input').is(':checked'), true);
-// });
-
-// test('auto sets input type to checkbox if property meta attribute is a boolean', function() {
-//   model['metaForProperty'] = function(property) {
-//     var obj = { 'type': 'boolean' };
-//     if (property === 'old') {
-//       return obj;
-//     }
-//   };
-//   set(model,'old', false);
-//   view = Ember.View.create({
-//     template: templateFor('{{input-field old}}'),
-//     container: container,
-//     controller: controller
-//   });
-//   append(view);
-//   equal(view.$().find('input').attr('type'), 'checkbox');
-// });
-
-// test('auto sets input type to number if property is a number', function() {
-//   set(model,'age', 30);
-//   view = Ember.View.create({
-//     template: templateFor('{{input-field age}}'),
-//     container: container,
-//     controller: controller
-//   });
-//   append(view);
-//   equal(view.$().find('input').attr('type'), 'number');
-// });
-
-// test('does not fail if a controller content constructor does not respond to proto', function() {
-//   controller.set('content', []);
-//   view = Ember.View.create({
-//     template: templateFor('{{input-field name}}'),
-//     container: container,
-//     controller: controller
-//   });
-//   append(view);
-//   equal(view.$().find('input').attr('type'), 'text');
-// });
+test('does not fail if a controller content constructor does not respond to proto', function(assert) {
+  this.set('model', []);
+  this.render(hbs`{{#form-for model}}{{input-field "name"}}{{/form-for}}`);
+  assert.equal(this.$().find('input').attr('type'), 'text');
+});
 
 // test('renders semantic form elements with text area', function() {
 //   view = Ember.View.create({
@@ -349,31 +243,15 @@ test('it renders', function(assert) {
 //   ok(view.$().find('select option:selected').html().match(/United States/));
 // });
 
-// test('auto sets input type to date', function() {
-//   view = Ember.View.create({
-//     template: templateFor('{{input-field receivedAt as="date"}}'),
-//     container: container,
-//     controller: controller
-//   });
-//   append(view);
-//   equal(view.$().find('input').attr('type'), 'date');
-// });
+test('auto sets input type to date', function(assert) {
+  this.render(hbs`{{#form-for model}}{{input-field "receivedAt" as="date"}}{{/form-for}}`);
+  assert.equal(this.$().find('input').attr('type'), 'date');
+});
 
-// test('auto sets input type to time', function() {
-//   view = Ember.View.create({
-//     template: templateFor('{{input-field receivedAt as="time"}}'),
-//     container: container,
-//     controller: controller
-//   });
-//   append(view);
-//   equal(view.$().find('input').attr('type'), 'time');
-// });
-
-
-
-
-
-
+test('auto sets input type to time', function(assert) {
+  this.render(hbs`{{#form-for model}}{{input-field "receivedAt" as="time"}}{{/form-for}}`);
+  assert.equal(this.$().find('input').attr('type'), 'time');
+});
 
 
 

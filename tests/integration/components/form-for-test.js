@@ -7,21 +7,10 @@ moduleForComponent('form-for', 'Integration | Component | form for', {
 });
 
 test('renders a form element', function(assert) {
-  assert.expect(2);
-
-  // Set any properties with this.set('myProperty', 'value');
-  // Handle any actions with this.on('myAction', function(val) { ... });
-
   this.render(hbs`{{form-for}}`);
-
   assert.equal(this.$().text().trim(), '');
 
-  // Template block usage:
-  this.render(hbs`
-    {{#form-for}}
-    {{/form-for}}
-  `);
-
+  this.render(hbs`{{#form-for}}{{/form-for}}`);
   assert.ok(this.$().find('form').get(0));
 });
 

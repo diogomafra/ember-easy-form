@@ -1,4 +1,5 @@
 import { moduleForComponent, test } from 'ember-qunit';
+import Ember from 'ember';
 import hbs from 'htmlbars-inline-precompile';
 
 moduleForComponent('submit-button', 'Integration | Component | submit button', {
@@ -7,33 +8,15 @@ moduleForComponent('submit-button', 'Integration | Component | submit button', {
 
 test('renders submit button', function(assert) {
   this.render(hbs`{{submit-button}}`);
-
   assert.equal(this.$().find('input').prop('value'), 'Submit');
   assert.equal(this.$().find('input').prop('type'), 'submit');
 });
 
 
-
-// test('renders submit button', function() {
-//   view = Ember.View.create({
-//     template: templateFor('{{submit}}'),
-//     container: container,
-//     context: model
-//   });
-//   append(view);
-//   equal(view.$().find('input').prop('value'), 'Submit');
-//   equal(view.$().find('input').prop('type'), 'submit');
-// });
-
-// test('renders as button', function() {
-//   view = Ember.View.create({
-//     template: templateFor('{{submit as="button"}}'),
-//     container: container,
-//     context: model
-//   });
-//   append(view);
-//   equal(view.$().find('button').text(), 'Submit');
-//   equal(view.$().find('button').prop('type'), 'submit');
+// test('renders as button', function(assert) {
+//   this.render(hbs`{{submit-button as="button"}}`);
+//   assert.equal(this.$().find('button').text(), 'Submit');
+//   assert.equal(this.$().find('button').prop('type'), 'submit');
 // });
 
 // test('has custom value as button', function() {
@@ -63,33 +46,29 @@ test('renders submit button', function(assert) {
 //   equal(view.$().find('button').prop('disabled'), false);
 // });
 
-// test('custom value', function() {
-//   view = Ember.View.create({
-//     template: templateFor('{{submit "Create"}}'),
-//     container: container,
-//     context: model
-//   });
-//   append(view);
-//   equal(view.$().find('input').prop('value'), 'Create');
-// });
+test('custom value', function(assert) {
+  this.render(hbs`{{submit-button "Create"}}`);
+  assert.equal(this.$().find('input').prop('value'), 'Create');
+});
 
-// test('submit button disabled state is bound to models valid state', function() {
-//   Ember.run(function() {
-//     set(model,'isValid', false);
-//     model = Ember.Object.create(model);
-//   });
-//   view = Ember.View.create({
-//     template: templateFor('{{submit}}'),
-//     container: container,
-//     context: model
-//   });
-//   append(view);
-//   equal(view.$().find('input').prop('disabled'), true);
-//   Ember.run(function() {
-//     set(model,'isValid', true);
-//   });
-//   equal(view.$().find('input').prop('disabled'), false);
-// });
+test('submit button disabled state is bound to models valid state', function(assert) {
+  var model = Ember.Object.create({
+    firstName: 'Brian',
+    lastName: 'Cardarella'
+  });
+  Ember.run(() => {
+    Ember.set(model,'isValid', false);
+    this.set('model', model);
+  });
+
+  this.render(hbs`{{#form-for model}}{{submit-button}}{{/form-for}}`);
+
+  assert.equal(this.$().find('input').prop('disabled'), true);
+  Ember.run(function() {
+    Ember.set(model,'isValid', true);
+  });
+  assert.equal(this.$().find('input').prop('disabled'), false);
+});
 
 
 

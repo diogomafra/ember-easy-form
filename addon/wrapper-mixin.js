@@ -14,25 +14,14 @@ export default Ember.Mixin.create({
   wrapperConfig: Ember.computed('attrs.wrapper', 'wrapper', function() {
     return config.getWrapper(this.get('attrs.wrapper') || this.get('wrapper'));
   }),
-  // templateForName: function(name) {
-  //   var template;
 
-  //   if (this.container) {
-  //     template = this.container.lookup('template:' + name);
-  //   }
-
-  //   return template || config.getTemplate(name);
-  // },
-  // formForModel: function(){
-  //   var formForModelPath = this._keywords.formForModelPath;
-
-  //   if (formForModelPath === 'context' || formForModelPath === 'controller' || formForModelPath === 'this') {
-  //     return this.get('context');
-  //   } else if (formForModelPath) {
-  //     return this.get('context.' + formForModelPath);
-  //   } else {
-  //     return this.get('context');
-  //   }
-  // }.property()
+  formForModel: Ember.computed(function(){
+    var componentWithModel = this.nearestWithProperty('model');
+    if (!componentWithModel) {
+      return;
+    }
+    var model = Ember.get(componentWithModel, 'model');
+    return model;
+  })
 });
 
