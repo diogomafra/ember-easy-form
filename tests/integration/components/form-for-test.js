@@ -1,3 +1,4 @@
+import Ember from 'ember';
 import { moduleForComponent, test } from 'ember-qunit';
 import hbs from 'htmlbars-inline-precompile';
 import config from 'ember-easy-form/config';
@@ -5,6 +6,10 @@ import config from 'ember-easy-form/config';
 moduleForComponent('form-for', 'Integration | Component | form for', {
   integration: true
 });
+
+var validateFunction = function() {
+  return Ember.RSVP.resolve();
+};
 
 test('renders a form element', function(assert) {
   this.render(hbs`{{form-for}}`);
@@ -24,37 +29,54 @@ test('uses the defined wrapper', function(assert) {
   assert.equal(this.$().find('form').attr('class'), 'ember-view my-form-class');
 });
 
-// test('submitting with invalid model does not call submit action on controller', function() {
-//   Ember.run(function() {
-//     set(model, 'isValid', false);
-//   });
-//   view = Ember.View.create({
-//     template: templateFor('{{#form-for controller}}{{/form-for}}'),
-//     container: container,
-//     controller: controller
-//   });
-//   append(view);
-//   Ember.run(function() {
-//     view._childViews[0].trigger('submit');
-//   });
-//   equal(controller.get('count'), 0);
-// });
 
-// test('submitting with valid model calls submit action on controller', function() {
-//   Ember.run(function() {
-//     set(model, 'isValid', true);
-//   });
-//   view = Ember.View.create({
-//     template: templateFor('{{#form-for controller}}{{/form-for}}'),
-//     container: container,
-//     controller: controller
-//   });
-//   append(view);
-//   Ember.run(function() {
-//     view._childViews[0].trigger('submit');
-//   });
-//   equal(controller.get('count'), 1);
-// });
+// DIOGO: now it does not call the controller directly
+test('submitting with invalid model does not call submit action', function(assert) {
+  var model = {
+       firstName: 'Brian',
+       lastName: 'Cardarella',
+       errors: Ember.Object.create(),
+       validate: validateFunction
+     };
+  this.set('model', model);
+  var submitCalled = false;
+  this.on('test-submit', function() {
+    submitCalled = true;
+  });
+  Ember.run(function() {
+    Ember.set(model, 'isValid', false);
+  });
+  this.render(hbs`{{#form-for model submit="test-submit"}}{{/form-for}}`);
+  Ember.run(() => {
+    this.$().find('submit').click();
+  });
+  assert.notOk(submitCalled, 'Should not call submit with invalid models.');
+});
+
+// DIOGO: now it does not call the controller directly
+test('submitting with valid model calls submit action', function(assert) {
+  var model = {
+       firstName: 'Brian',
+       lastName: 'Cardarella',
+       errors: Ember.Object.create(),
+       validate: validateFunction
+     };
+  this.set('model', model);
+  Ember.run(function() {
+    Ember.set(model, 'isValid', true);
+  });
+  var submitCalled = false;
+  this.on('testSubmit', function() {
+    submitCalled = true;
+  });
+
+  this.render(hbs`{{#form-for model submit="testSubmit"}}{{submit-button}}{{/form-for}}`);
+  Ember.run(() => {
+    this.$().find('input[type="submit"]').click();
+  });
+  assert.ok(submitCalled, 'Should call submit with valid models.');
+});
+
 
 // test('submitting with valid controller calls submit action on controller', function() {
 //   controller.reopen({
