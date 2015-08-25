@@ -18,6 +18,10 @@ function getTypeForValue(forcedType, property, model, value) {
     return forcedType;
   }
 
+  if (!property) {
+    return 'text';
+  }
+
   if (property.match(/password/)) {
     return 'password';
   } else if (property.match(/email/)) {
@@ -40,7 +44,7 @@ function getTypeForValue(forcedType, property, model, value) {
     }
   }
 
-  return "text";
+  return 'text';
 }
 
 var InputFieldComponent = Ember.Component.extend(WrapperMixin, {

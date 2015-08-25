@@ -7,13 +7,17 @@ var FormFormComponent = Ember.Component.extend(WrapperMixin, {
   tagName: 'form',
   init() {
     this._super(...arguments);
-    this.action = 'submit';
+    this.action = this.action || 'submit';
   },
-  didInsertElement: function() {
-    this.$().on('submit', () => {
-      this.sendAction('submit');
-      return false;
-    });
+  submit: function(e) {
+    e.preventDefault();
+    if (Ember.isNone(this.get('model.validate'))) {
+      this.sendAction();
+    } else {
+      if (this.get('model.isValid')) {
+        this.sendAction();
+      }
+    }
   }
 });
 

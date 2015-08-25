@@ -16,6 +16,9 @@ var FormInputComponent = Ember.Component.extend(WrapperMixin, {
   hintText: Ember.computed.reads('attrs.hint'),
   labelText: Ember.computed('attrs.propertyName', 'attrs.label', function() {
     return this.get('attrs.label') || humanize(this.get('attrs.propertyName'));
+  }),
+  name: Ember.computed('property', 'propertyName', function() {
+    return this.get('property') || this.get('propertyName');
   })
 });
 
