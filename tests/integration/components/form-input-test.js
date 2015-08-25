@@ -229,26 +229,23 @@ test('block form for input without label', function(assert) {
 //   equal(input.prop('id'), label.prop('for'));
 // });
 
-// test('uses the wrapper config', function() {
-//   Ember.EasyForm.Config.registerWrapper('my_wrapper', {inputClass: 'my-input', errorClass: 'my-error', fieldErrorClass: 'my-fieldWithErrors'});
-//   model['errors'] = ErrorsObject.create();
+test('uses the wrapper config', function(assert) {
+  config.registerWrapper('my_wrapper', {inputClass: 'my-input', errorClass: 'my-error', fieldErrorClass: 'my-fieldWithErrors'});
 
-//   Ember.run(function() {
-//     get(model,'errors.firstName').pushObject("can't be blank");
-//   });
-//   view = Ember.View.create({
-//     template: templateFor('{{#form-for model wrapper="my_wrapper"}}{{input firstName}}{{/form-for}}'),
-//     container: container,
-//     controller: controller
-//   });
-//   append(view);
-//   Ember.run(function() {
-//     view._childViews[0]._childViews[0].trigger('focusOut');
-//   });
-//   ok(view.$().find('div.my-input').get(0), 'inputClass not defined');
-//   ok(view.$().find('div.my-fieldWithErrors').get(0), 'fieldErrorClass not defined');
-//   ok(view.$().find('span.my-error').get(0), 'errorClass not defined');
-// });
+  Ember.run(() => {
+    this.set('model.errors', ErrorsObject.create());
+    this.get('model.errors.firstName').pushObject("can't be blank");
+  });
+
+  this.render(hbs`{{#form-for model wrapper="my_wrapper"}}{{form-input "firstName"}}{{/form-for}}`);
+  Ember.run(() => {
+    this.$('input:first').blur();
+  });
+
+  assert.ok(this.$().find('div.my-input').get(0), 'inputClass not defined');
+  assert.ok(this.$().find('div.my-fieldWithErrors').get(0), 'fieldErrorClass not defined');
+  assert.ok(this.$().find('span.my-error').get(0), 'errorClass not defined');
+});
 
 test('uses the defined template name', function(assert) {
   this.container.register('template:custom-input-template', hbs`My custom template | {{label-field property=propertyName text=labelText}}`);
@@ -318,29 +315,19 @@ test('defaults the name property', function(assert) {
 });
 
 
-// test('allows specifying the name property', function() {
-//   view = Ember.View.create({
-//     template: templateFor('{{input firstName name="some-other-name"}}'),
-//     container: container,
-//     controller: controller
-//   });
-//   append(view);
+test('allows specifying the name property', function(assert) {
+  this.render(hbs`{{#form-for model}}{{form-input "firstName" name="some-other-name"}}{{/form-for}}`);
 
-//   equal(view.$().find('input').prop('name'), "some-other-name");
-// });
+  assert.equal(this.$().find('input').prop('name'), "some-other-name");
+});
 
-// test('scopes property lookup to model declared in form-for', function(){
-//   controller.set('someOtherModel', Ember.Object.create({firstName: 'Robert'}));
+test('scopes property lookup to model declared in form-for', function(assert) {
+  this.set('someOtherModel', Ember.Object.create({firstName: 'Robert'}));
 
-//   view = Ember.View.create({
-//     template: templateFor('{{#form-for someOtherModel}}{{input firstName}}{{/form-for}}'),
-//     container: container,
-//     controller: controller
-//   });
-//   append(view);
+  this.render(hbs`{{#form-for someOtherModel}}{{form-input "firstName"}}{{/form-for}}`);
 
-//   equal(view.$().find('input').val(), "Robert");
-// });
+  assert.equal(this.$().find('input').val(), "Robert");
+});
 
 // test('can specify a property outside of the model if a keyword is used as a prefix', function(){
 //   controller.set('someOtherModel', Ember.Object.create({firstName: 'Robert'}));

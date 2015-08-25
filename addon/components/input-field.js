@@ -7,7 +7,9 @@ import WrapperMixin from 'ember-easy-form/wrapper-mixin';
 function propertyType(model, property) {
   var constructor = model.constructor;
   if (constructor.proto) {
-    return Ember.meta(constructor.proto(), false).descs[property];
+    // TODO - diogo - I think .descs is not valid anymore
+    var descs = Ember.meta(constructor.proto(), false).descs;
+    return  descs ? descs[property] : null;
   } else {
     return null;
   }
