@@ -11,6 +11,7 @@ var FormFormComponent = Ember.Component.extend(WrapperMixin, {
   },
   submit: function(e) {
     e.preventDefault();
+    // TODO - Diogo - it's not calling validate(), create a test for this
     if (Ember.isNone(this.get('model.validate'))) {
       this.sendAction();
     } else {

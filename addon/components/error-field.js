@@ -3,7 +3,6 @@ import WrapperMixin from 'ember-easy-form/wrapper-mixin';
 
 var ErrorFieldComponent = Ember.Component.extend(WrapperMixin, {
   tagName: 'span',
-  classNames: ['error'],
   classNameBindings: ['wrapperConfig.errorClass'],
   layoutName: Ember.computed.oneWay('wrapperConfig.errorTemplate'),
   errorText: Ember.computed('errors.[]', function() {
@@ -12,7 +11,7 @@ var ErrorFieldComponent = Ember.Component.extend(WrapperMixin, {
   }),
   init() {
     this._super(...arguments);
-    var propertyName = this.get('propertyName');
+    var propertyName = this.get('propertyName') || this.get('property');
     Ember.Binding.from('formForModel.errors.' + propertyName).to('errors').connect(this);
   }
 });

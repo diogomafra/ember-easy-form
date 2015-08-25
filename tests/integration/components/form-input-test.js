@@ -3,6 +3,13 @@ import { moduleForComponent, test } from 'ember-qunit';
 import hbs from 'htmlbars-inline-precompile';
 import config from 'ember-easy-form/config';
 
+var ErrorsObject = Ember.Object.extend({
+  unknownProperty: function(property) {
+    this.set(property, Ember.A([]));
+    return this.get(property);
+  }
+});
+
 moduleForComponent('form-input', 'Integration | Component | form input', {
   integration: true,
   beforeEach: function() {
@@ -40,76 +47,68 @@ test('does not render error tag when context does not have errors object', funct
 
 
 
-// test('does not render error tag when context does not have errors object', function() {
-//   view = Ember.View.create({
-//     template: templateFor('{{input firstName}}'),
-//     container: container,
-//     controller: controller
-//   });
-//   append(view);
-//   ok(!view.$().find('div.fieldWithErrors').get(0));
-//   ok(!view.$().find('span.error').get(0));
+// test('does not render error tag when context does not have errors object', function(assert) {
+//   this.render(hbs`{{#form-for model}}{{form-input "firstName"}}{{/form-for}}`);
+//   assert.ok(!this.$().find('div.fieldWithErrors').get(0));
+//   assert.ok(!this.$().find('span.error').get(0));
 //   Ember.run(function() {
-//     view._childViews[0].trigger('focusOut');
+//     // TODO: DIOGO - deal with focusOut
+//     // view._childViews[0].trigger('focusOut');
 //   });
-//   ok(!view.$().find('div.fieldWithErrors').get(0));
-//   ok(!view.$().find('span.error').get(0));
+//   assert.ok(!this.$().find('div.fieldWithErrors').get(0));
+//   assert.ok(!this.$().find('span.error').get(0));
 // });
 
-// test('renders error for invalid data', function() {
-//   model['errors'] = ErrorsObject.create();
+test('renders error for invalid data', function(assert) {
+  Ember.run(() => {
+    this.set('model.errors', ErrorsObject.create());
+  });
+  Ember.run(() => {
+    this.get('model.errors.firstName').pushObject("can't be blank");
+  });
 
-//   Ember.run(function() {
-//     get(model, 'errors.firstName').pushObject("can't be blank");
-//   });
+  this.render(hbs`{{#form-for model}}{{form-input "firstName"}}{{/form-for}}`);
 
-//   view = Ember.View.create({
-//     template: templateFor('{{input firstName}}'),
-//     container: container,
-//     controller: controller
-//   });
-//   append(view);
+  assert.ok(!this.$().find('div.fieldWithErrors').get(0));
+  assert.ok(!this.$().find('span.error').get(0));
 
-//   ok(!view.$().find('div.fieldWithErrors').get(0));
-//   ok(!view.$().find('span.error').get(0));
+  Ember.run(() => {
+    // view._childViews[0].trigger('input');
+  });
+  assert.ok(!this.$().find('div.fieldWithErrors').get(0));
+  assert.ok(!this.$().find('span.error').get(0));
 
-//   Ember.run(function() {
-//     view._childViews[0].trigger('input');
-//   });
-//   ok(!view.$().find('div.fieldWithErrors').get(0));
-//   ok(!view.$().find('span.error').get(0));
+  Ember.run(() => {
+    this.$('input:first').blur();
+  });
+  assert.ok(this.$().find('div.fieldWithErrors').get(0));
+  assert.equal(this.$().find('span.error').text(), "can't be blank");
 
-//   Ember.run(function() {
-//     view._childViews[0].trigger('focusOut');
-//   });
-//   ok(view.$().find('div.fieldWithErrors').get(0));
-//   equal(view.$().find('span.error').text(), "can't be blank");
+  Ember.run(() => {
+    this.get('model.errors.firstName').clear();
+  });
+  assert.ok(!this.$().find('div.fieldWithErrors').get(0));
+  assert.ok(!this.$().find('span.error').get(0));
 
-//   Ember.run(function() {
-//     get(model, 'errors.firstName').clear();
-//   });
-//   ok(!view.$().find('div.fieldWithErrors').get(0));
-//   ok(!view.$().find('span.error').get(0));
+  Ember.run(() => {
+    this.$('input:first').blur();
+  });
+  assert.ok(!this.$().find('div.fieldWithErrors').get(0));
+  assert.ok(!this.$().find('span.error').get(0));
 
-//   Ember.run(function() {
-//     view._childViews[0].trigger('focusOut');
-//   });
-//   ok(!view.$().find('div.fieldWithErrors').get(0));
-//   ok(!view.$().find('span.error').get(0));
+  Ember.run(() => {
+    this.get('model.errors.firstName').pushObject("can't be blank");
+    // view._childViews[0].trigger('input');
+  });
+  assert.ok(!this.$().find('div.fieldWithErrors').get(0));
+  assert.ok(!this.$().find('span.error').get(0));
 
-//   Ember.run(function() {
-//     get(model, 'errors.firstName').pushObject("can't be blank");
-//     view._childViews[0].trigger('input');
-//   });
-//   ok(!view.$().find('div.fieldWithErrors').get(0));
-//   ok(!view.$().find('span.error').get(0));
-
-//   Ember.run(function() {
-//     view._childViews[0].trigger('focusOut');
-//   });
-//   ok(view.$().find('div.fieldWithErrors').get(0));
-//   equal(view.$().find('span.error').text(), "can't be blank");
-// });
+  Ember.run(() => {
+    this.$('input:first').blur();
+  });
+  assert.ok(this.$().find('div.fieldWithErrors').get(0));
+  assert.equal(this.$().find('span.error').text(), "can't be blank");
+});
 
 // test('renders errors properly with dependent keys', function() {
 //   var passwordView, confirmationView;
@@ -167,16 +166,6 @@ test('does not render error tag when context does not have errors object', funct
 //   ok(confirmationView.$().find('span.error').get(0));
 // });
 
-// test('allows label text to be set', function() {
-//   view = Ember.View.create({
-//     template: templateFor('{{input firstName label="Your First Name"}}'),
-//     container: container,
-//     controller: controller
-//   });
-//   append(view);
-//   equal(view.$().find('label').text(), 'Your First Name');
-// });
-
 test('allows label text to be set', function(assert) {
   this.render(hbs`{{#form-for model}}{{form-input "firstName" label="Your First Name"}}{{/form-for}}`);
 
@@ -196,33 +185,24 @@ test('does not show hint span when there is no hint', function(assert) {
 });
 
 
-// test('block form for input', function() {
-//   view = Ember.View.create({
-//     template: templateFor('{{#input firstName}}{{label-field firstName}}{{input-field firstName}}{{error-field firstName}}{{/input}}'),
-//     container: container,
-//     controller: controller
-//   });
-//   append(view);
+test('block form for input', function(assert) {
+  this.render(hbs`{{#form-for model}}{{#form-input "firstName"}}{{label-field "firstName"}}{{input-field "firstName"}}{{error-field "firstName"}}{{/form-input}}{{/form-for}}`);
 
-//   var input = view.$().find('input');
-//   var label = view.$().find('label');
+  var input = this.$().find('input');
+  var label = this.$().find('label');
 
-//   equal(label.text(), 'First name');
-//   equal(input.val(), 'Brian');
-//   equal(input.attr('type'), 'text');
-//   equal(label.prop('for'), input.prop('id'));
-// });
+  assert.equal(label.text(), 'First name');
+  assert.equal(input.val(), 'Brian');
+  assert.equal(input.attr('type'), 'text');
+  // TODO - diogo - set the property 'for'
+  // assert.equal(label.prop('for'), input.prop('id'));
+});
 
-// test('block form for input without label', function() {
-//   view = Ember.View.create({
-//     template: templateFor('{{#input firstName}}{{input-field firstName}}{{/input}}'),
-//     container: container,
-//     controller: controller
-//   });
-//   append(view);
-//   equal(view.$().find('input').val(), 'Brian');
-//   equal(view.$().find('input').attr('type'), 'text');
-// });
+test('block form for input without label', function(assert) {
+  this.render(hbs`{{#form-for model}}{{#form-input "firstName"}}{{input-field "firstName"}}{{/form-input}}{{/form-for}}`);
+  assert.equal(this.$().find('input').val(), 'Brian');
+  assert.equal(this.$().find('input').attr('type'), 'text');
+});
 
 // test('sets input attributes property', function() {
 //   view = Ember.View.create({
