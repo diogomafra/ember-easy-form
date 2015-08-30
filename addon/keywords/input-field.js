@@ -1,4 +1,5 @@
 import Ember from 'ember';
+import config from 'ember-easy-form/config';
 
 // https://github.com/emberjs/ember.js/blob/master/packages/ember-metal/lib/assign.js
 function assign(original, ...args) {
@@ -70,6 +71,19 @@ function getTypeForValue(forcedType, property, model, value) {
 export default {
   setupState(lastState, env, scope, params, hash) {
     let componentName = 'input-text-field';
+    let componentAs = env.hooks.getValue(hash.as);
+    if (componentAs) {
+      let newComponentName = config.getInputType(componentAs);
+      if (!newComponentName && componentAs === 'text') {
+        newComponentName = 'input-text-area';
+      }
+
+      if (newComponentName) {
+        // alert(newComponentName);
+        componentName = newComponentName;
+      }
+    }
+
     let propertyName = env.hooks.getValue(params[0]) || env.hooks.getValue(hash.property);
     let forcedType = env.hooks.getValue(hash.as) || env.hooks.getValue(hash.type);
     var viewWithModel = env.view.hasOwnProperty('model') ? env.view : env.view.nearestWithProperty('model');

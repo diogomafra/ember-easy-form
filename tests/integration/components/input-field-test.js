@@ -1,6 +1,7 @@
 import Ember from 'ember';
 import { moduleForComponent, test } from 'ember-qunit';
 import hbs from 'htmlbars-inline-precompile';
+import config from 'ember-easy-form/config';
 import setup from 'ember-easy-form/setup';
 
 moduleForComponent('input-field', 'Integration | Component | input field', {
@@ -168,28 +169,17 @@ test('does not fail if a controller content constructor does not respond to prot
   assert.equal(this.$().find('input').attr('type'), 'text');
 });
 
-// test('renders semantic form elements with text area', function() {
-//   view = Ember.View.create({
-//     template: templateFor('{{input-field firstName as="text"}}'),
-//     container: container,
-//     controller: controller
-//   });
-//   append(view);
-//   equal(view.$().find('textarea').val(), 'Brian');
-// });
+test('renders semantic form elements with text area', function(assert) {
+  this.render(hbs`{{#form-for model}}{{input-field "firstName" as="text"}}{{/form-for}}`);
+  assert.equal(this.$().find('textarea').val(), 'Brian');
+});
 
-// test('uses the custom input type when defined', function() {
-//   Ember.EasyForm.Config.registerInputType('my_input', Ember.EasyForm.TextArea);
-//   Ember.EasyForm.Config.registerInputType('another_input', Ember.EasyForm.TextField);
-//   view = Ember.View.create({
-//     template: templateFor('{{input-field firstName as="my_input"}}{{input-field lastName as="another_input"}}'),
-//     container: container,
-//     controller: controller
-//   });
-//   append(view);
-//   equal(view.$().find('textarea').val(), 'Brian');
-//   equal(view.$().find('input').val(), 'Cardarella');
-// });
+test('uses the custom input type when defined', function(assert) {
+  config.registerInputType('my_input', 'custom-component');
+  this.render(hbs`{{#form-for model}}{{input-field "firstName"}}{{input-field "lastName" as="my_input"}}{{/form-for}}`);
+  assert.equal(this.$().find('input').val(), 'Brian');
+  assert.equal(this.$().find('div.custom-component').text().trim(), 'Text: Cardarella');
+});
 
 // test('generates a select input and options', function() {
 //   view = Ember.View.create({
