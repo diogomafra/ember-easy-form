@@ -21,7 +21,7 @@ test('renders a label field with custom text', function(assert) {
 test('uses the wrapper config', function(assert) {
   config.registerWrapper('my_wrapper', {labelClass: 'my-label'});
 
-  this.render(hbs`{{#form-for controller wrapper="my_wrapper"}}{{label-field firstName}}{{/form-for}}`);
+  this.render(hbs`{{#form-for model wrapper="my_wrapper"}}{{label-field firstName}}{{/form-for}}`);
 
   assert.ok(this.$().find('label.my-label').get(0), 'labelClass not defined');
 });
@@ -30,7 +30,7 @@ test('uses the defined template name', function(assert) {
   this.container.register('template:custom-label-template', hbs`My custom label | {{labelText}}`);
   config.registerWrapper('my_wrapper', {labelTemplate: 'custom-label-template'});
 
-  this.render(hbs`{{#form-for controller wrapper="my_wrapper"}}{{label-field "firstName"}}{{/form-for}}`);
+  this.render(hbs`{{#form-for model wrapper="my_wrapper"}}{{label-field "firstName"}}{{/form-for}}`);
 
   assert.equal(this.$().text(), "My custom label | First name");
 });

@@ -33,7 +33,7 @@ test('renders a form element', function(assert) {
 test('uses the defined wrapper', function(assert) {
   config.registerWrapper('my_wrapper', {formClass: 'my-form-class'});
 
-  this.render(hbs`{{#form-for controller wrapper="my_wrapper"}}{{/form-for}}`);
+  this.render(hbs`{{#form-for model wrapper="my_wrapper"}}{{/form-for}}`);
 
   assert.equal(this.$().find('form').attr('class'), 'ember-view my-form-class');
 });
