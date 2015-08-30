@@ -344,16 +344,10 @@ test('scopes property lookup to model declared in form-for', function(assert) {
 //   equal(view.$('option:selected').text(), "Ocala");
 // });
 
-// test('sets input as="date" attributes properly', function() {
-//   view = Ember.View.create({
-//     template: templateFor('{{input receiveAt as="date"}}'),
-//     container: container,
-//     controller: controller
-//   });
-//   append(view);
-//   var input = view.$().find('input');
-//   equal(input.prop('type'), 'date');
-// });
+test('sets input as="date" attributes properly', function(assert) {
+  this.render(hbs`{{#form-for model}}{{form-input "receiveAt" as="date"}}{{/form-for}}`);
+  assert.equal(this.$().find('input').prop('type'), 'date');
+});
 
 // module('{{input}} without property argument', {
 //   setup: prepare,
@@ -382,15 +376,10 @@ test('scopes property lookup to model declared in form-for', function(assert) {
 //   equal(view.$().find('input').prop('name'), "first-name");
 // });
 
-// test('adds a class to the parent div for the property name', function() {
-//   view = Ember.View.create({
-//     template: templateFor('{{input firstName labelClass="blammo"}}'),
-//     container: container,
-//     controller: controller
-//   });
-//   append(view);
-//   equal(view.$().find('div.input.firstName input').val(), 'Brian');
-// });
+test('adds a class to the parent div for the property name', function(assert) {
+  this.render(hbs`{{#form-for model}}{{form-input "firstName" labelClass="blammo"}}{{/form-for}}`);
+  assert.equal(this.$().find('div.input.firstName input').val(), 'Brian');
+});
 
 
 

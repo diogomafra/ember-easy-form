@@ -3,7 +3,7 @@ import WrapperMixin from 'ember-easy-form/wrapper-mixin';
 import {humanize} from 'ember-easy-form/utilities';
 
 var FormInputComponent = Ember.Component.extend(WrapperMixin, {
-  classNameBindings: ['wrapperConfig.inputClass'],
+  classNameBindings: ['wrapperConfig.inputClass', 'propertyName'],
   layoutName: Ember.computed.oneWay('wrapperConfig.inputTemplate'),
   value: Ember.computed('model', 'propertyName', function() {
     var propertyName = this.get('propertyName');
