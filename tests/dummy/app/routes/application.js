@@ -4,7 +4,9 @@ export default Ember.Route.extend({
   model() {
     return {
       firstName: 'Diogo',
-      lastName: 'Mafra'
+      lastName: 'Mafra',
+      password: '123456',
+      age: 20
     };
   }
 });

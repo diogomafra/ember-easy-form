@@ -1,10 +1,12 @@
 import Ember from 'ember';
 import { moduleForComponent, test } from 'ember-qunit';
 import hbs from 'htmlbars-inline-precompile';
+import setup from 'ember-easy-form/setup';
 
 moduleForComponent('input-field', 'Integration | Component | input field', {
   integration: true,
   beforeEach: function() {
+    setup();
     let countries = [{ id: 1, name: 'South Aftica' }, { id: 2, name: 'United States' }];
     this.set('optionsForCountry', countries);
     this.set('model', {
@@ -114,7 +116,10 @@ test('auto sets input type to number if property meta attribute is a number', fu
 });
 
 test('auto sets input type to number if property is a number', function(assert) {
+  Ember.run(() => {
   this.set('model.age', 30);
+});
+
   this.render(hbs`{{#form-for model}}{{input-field "age"}}{{/form-for}}`);
   assert.equal(this.$().find('input').attr('type'), 'number');
 });

@@ -2,6 +2,7 @@ import Ember from 'ember';
 import { moduleForComponent, test } from 'ember-qunit';
 import hbs from 'htmlbars-inline-precompile';
 import config from 'ember-easy-form/config';
+import setup from 'ember-easy-form/setup';
 
 var ErrorsObject = Ember.Object.extend({
   unknownProperty: function(property) {
@@ -13,6 +14,7 @@ var ErrorsObject = Ember.Object.extend({
 moduleForComponent('form-input', 'Integration | Component | form input', {
   integration: true,
   beforeEach: function() {
+    setup();
     this.set('model', {
       firstName: 'Brian',
       lastName: 'Cardarella'

@@ -2,6 +2,7 @@ import Ember from 'ember';
 import { moduleForComponent, test } from 'ember-qunit';
 import hbs from 'htmlbars-inline-precompile';
 import config from 'ember-easy-form/config';
+import setup from 'ember-easy-form/setup';
 
 var validateFunction = function() {
   return Ember.RSVP.resolve();
@@ -10,6 +11,7 @@ var validateFunction = function() {
 moduleForComponent('form-for', 'Integration | Component | form for', {
   integration: true,
   beforeEach: function() {
+    setup();
     var model = {
       firstName: 'Brian',
       lastName: 'Cardarella',
@@ -157,4 +159,3 @@ test('uses the specified models validation object', function(assert) {
   });
   assert.ok(submitCalled);
 });
-
