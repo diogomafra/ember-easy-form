@@ -39,27 +39,12 @@ test('does not render error tag when context does not have errors object', funct
 
   assert.ok(!this.$().find('div.fieldWithErrors').get(0));
   assert.ok(!this.$().find('span.error').get(0));
-  Ember.run(function() {
-    // TODO: fazer lógica de focus out
-    // this._childViews[0].trigger('focusOut');
+  Ember.run(() => {
+    this.$('input:first').blur();
   });
   assert.ok(!this.$().find('div.fieldWithErrors').get(0));
   assert.ok(!this.$().find('span.error').get(0));
 });
-
-
-
-// test('does not render error tag when context does not have errors object', function(assert) {
-//   this.render(hbs`{{#form-for model}}{{form-input "firstName"}}{{/form-for}}`);
-//   assert.ok(!this.$().find('div.fieldWithErrors').get(0));
-//   assert.ok(!this.$().find('span.error').get(0));
-//   Ember.run(function() {
-//     // TODO: DIOGO - deal with focusOut
-//     // view._childViews[0].trigger('focusOut');
-//   });
-//   assert.ok(!this.$().find('div.fieldWithErrors').get(0));
-//   assert.ok(!this.$().find('span.error').get(0));
-// });
 
 test('renders error for invalid data', function(assert) {
   Ember.run(() => {
@@ -206,18 +191,14 @@ test('block form for input without label', function(assert) {
   assert.equal(this.$().find('input').attr('type'), 'text');
 });
 
-// test('sets input attributes property', function() {
-//   view = Ember.View.create({
-//     template: templateFor('{{input receiveAt as="email" placeholder="Your email" disabled=true}}'),
-//     container: container,
-//     controller: controller
-//   });
-//   append(view);
-//   var input = view.$().find('input');
-//   equal(input.prop('type'), 'email');
-//   equal(input.prop('placeholder'), 'Your email');
-//   equal(input.prop('disabled'), true);
-// });
+test('sets input attributes property', function(assert) {
+  this.render(hbs`{{#form-for model}}{{form-input "receiveAt" as="email" placeholder="Your email" disabled=true}}{{/form-for}}`);
+
+  var input = this.$().find('input');
+  assert.equal(input.prop('type'), 'email');
+  assert.equal(input.prop('placeholder'), 'Your email');
+  assert.equal(input.prop('disabled'), true);
+});
 
 // test('binds label to input field', function() {
 //   view = Ember.View.create({
@@ -258,30 +239,33 @@ test('uses the defined template name', function(assert) {
   assert.equal(this.$().text(), 'My custom template | First name');
 });
 
-
-// test('sets input attributes property as bindings', function() {
-//   view = Ember.View.create({
-//     template: templateFor('{{input firstName placeholderBinding="placeholder" labelBinding="label" hintBinding="hint"}}'),
-//     container: container,
-//     controller: controller
+// TODO: DIOGO - falta fazer o binding no placeholder. Ainda não funciona.
+// test('sets input attributes property as bindings', function(assert) {
+//   Ember.run(() => {
+//     this.setProperties({
+//       placeholder: 'A placeholder',
+//       label: 'A label',
+//       hint: 'A hint',
+//       prompt: 'A prompt'
+//     });
 //   });
-//   append(view);
-
-//   equal(view.$().find('input').prop('placeholder'), controller.get('placeholder'));
-//   equal(view.$().find('label').text(), controller.get('label'));
-//   equal(view.$().find('.hint').text(), controller.get('hint'));
-
-//   Ember.run(function() {
-//     controller.setProperties({
+//
+//   this.render(hbs`{{#form-for model}}{{form-input "firstName" placeholder=placeholder label=label hint=hint}}{{/form-for}}`);
+//
+//   assert.equal(this.$().find('input').prop('placeholder'), 'A placeholder');
+//   assert.equal(this.$().find('label').text(), 'A label');
+//   assert.equal(this.$().find('.hint').text(), 'A hint');
+//
+//   Ember.run(() => {
+//     this.setProperties({
 //       placeholder: 'Write your first name',
 //       label: 'First name (not a last name)',
 //       hint: 'Usually different than your last name'
 //     });
 //   });
-
-//   equal(view.$().find('input').prop('placeholder'), controller.get('placeholder'));
-//   equal(view.$().find('label').text(), controller.get('label'));
-//   equal(view.$().find('.hint').text(), controller.get('hint'));
+//   assert.equal(this.$().find('input').prop('placeholder'), this.get('placeholder'));
+//   assert.equal(this.$().find('label').text(), this.get('label'));
+//   assert.equal(this.$().find('.hint').text(), this.get('hint'));
 // });
 
 // test('sets select prompt property as bindings', function() {

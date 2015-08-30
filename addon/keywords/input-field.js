@@ -94,7 +94,16 @@ export default {
   },
 
   render(morph, env, scope, params, hash, template, inverse, visitor) {
-    let newHash = assign({}, hash, {type: morph.state.type, property: morph.state.property});
+    var newHash = assign({}, hash, {type: morph.state.type, property: morph.state.property});
+    var options = env.hooks.getValue(hash.inputOptions);
+
+    if (options) {
+      for (var prop in options) {
+        newHash[prop] = options[prop];
+      }
+    }
+    newHash["inputOptions"] = null;
+
     env.hooks.component(morph, env, scope, morph.state.componentName, params, newHash, { default: template, inverse }, visitor);
   },
 

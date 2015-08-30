@@ -15,13 +15,28 @@ export default Ember.Mixin.create({
     return config.getWrapper(this.get('attrs.wrapper') || this.get('wrapper'));
   }),
 
-  formForModel: Ember.computed(function(){
-    var componentWithModel = this.nearestWithProperty('model');
-    if (!componentWithModel) {
-      return;
-    }
-    var model = Ember.get(componentWithModel, 'model');
-    return model;
-  })
-});
+  // formForModel: Ember.computed(function(){
+  //   var componentWithModel = this.nearestWithProperty('model');
+  //   if (!componentWithModel) {
+  //     return;
+  //   }
+  //   var model = Ember.get(componentWithModel, 'model');
+  //   return model;
+  // }),
 
+  init(...args) {
+    this._super(...args);
+
+    var pathToProperty = 'model';
+    var currentView = this;
+    while(currentView && !('model' in currentView)) {
+      pathToProperty = 'parentView.' + pathToProperty;
+      currentView = Ember.get(currentView, 'parentView');
+    }
+    if (currentView) {
+      Ember.defineProperty(this, 'formForModel', Ember.computed.alias(pathToProperty));
+    } else {
+      this.set('formForModel', null);
+    }
+  }
+});

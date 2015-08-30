@@ -13,9 +13,9 @@ var FormInputComponent = Ember.Component.extend(WrapperMixin, {
     var component = this.nearestWithProperty('model');
     return Ember.get(component, 'model');
   }),
-  hintText: Ember.computed.reads('attrs.hint'),
-  labelText: Ember.computed('attrs.propertyName', 'attrs.label', function() {
-    return this.get('attrs.label') || humanize(this.get('attrs.propertyName'));
+  hintText: Ember.computed.reads('hint'),
+  labelText: Ember.computed('propertyName', 'label', function() {
+    return this.get('label') || humanize(this.get('propertyName'));
   }),
   name: Ember.computed('property', 'propertyName', function() {
     return this.get('property') || this.get('propertyName');
@@ -30,6 +30,17 @@ var FormInputComponent = Ember.Component.extend(WrapperMixin, {
       var canShowValidationError = this.get('canShowValidationError');
       return !!(canShowValidationError && errors && errors[0]);
     }));
+
+    var allOptions =  ['as', 'collection', 'optionValuePath', 'optionLabelPath', 'selection', 'multiple', 'name',
+    'placeholder', 'prompt', 'disabled'];
+    var fun = function() {
+      var values = {};
+      for (var i = 0; i < allOptions.length; i++) {
+        values[allOptions[i]] = this.get(allOptions[i]);
+      }
+      return values;
+    };
+    Ember.defineProperty(this, 'inputOptions', Ember.computed.apply(null, allOptions.concat(fun)));
   },
   focusOut: function() {
     this.set('hasFocusedOut', true);
