@@ -6,8 +6,8 @@ var LabelFieldComponent = Ember.Component.extend(WrapperMixin, {
   tagName: 'label',
   layoutName: Ember.computed.oneWay('wrapperConfig.labelTemplate'),
   classNameBindings: ['wrapperConfig.labelClass'],
-  labelText: Ember.computed('attrs.text', 'attrs.property', 'attrs.propertyName', function() {
-    return this.get('attrs.text') || humanize(this.get('attrs.property') || this.get('attrs.propertyName'));
+  labelText: Ember.computed('text', 'property', 'propertyName', function() {
+    return this.get('text') || humanize(this.get('property') || this.get('propertyName'));
   })
 });
 

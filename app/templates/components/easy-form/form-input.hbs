@@ -2,7 +2,7 @@
   {{yield}}
 {{else}}
   {{label-field property=propertyName text=labelText}}
-  {{input-field property=propertyName name=name inputOptions=inputOptions as=as}}
+  {{input-field property=propertyName inputOptions=inputOptions}}
   {{#if showError}}{{error-field property=propertyName}}{{/if}}
   {{#if hint}}{{hint-field property=propertyName text=hintText}}{{/if}}
 {{/if}}

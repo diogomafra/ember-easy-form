@@ -3,7 +3,7 @@ import WrapperMixin from 'ember-easy-form/wrapper-mixin';
 
 var HintFieldComponent = Ember.Component.extend(WrapperMixin, {
   tagName: 'span',
-  hintText: Ember.computed.reads('attrs.text'),
+  hintText: Ember.computed.reads('text'),
   classNameBindings: ['wrapperConfig.hintClass'],
   layoutName: Ember.computed.oneWay('wrapperConfig.hintTemplate')
 });
