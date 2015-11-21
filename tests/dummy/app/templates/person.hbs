@@ -1,10 +1,10 @@
 <h2>Person form</h2>
 <div id="teste">
 {{#form-for model}}
-  {{input firstName}}
-  {{input lastName}}
-  {{input city as="select" collection="controller.cities"}}
-  {{input controller.welcomeMessage
+  {{form-input "firstName"}}
+  {{form-input "lastName"}}
+  {{form-input "city" as="select" collection="controller.cities"}}
+  {{form-input controller.welcomeMessage
           class="welcomeMessage"
           label="Message"
           hint="Property defined in the controller."}}

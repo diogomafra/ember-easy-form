@@ -150,7 +150,7 @@ test('does not show hint span when there is no hint', function(assert) {
   assert.equal(this.$().find('span.hint').length, 0);
 });
 
-test('block form for input', function(assert) {
+skip('block form for input', function(assert) {
   this.render(hbs`{{#form-for model}}{{#form-input "firstName"}}{{label-field "firstName"}}{{input-field "firstName"}}{{error-field "firstName"}}{{/form-input}}{{/form-for}}`);
 
   var input = this.$().find('input');

@@ -1,6 +1,5 @@
 import Ember from 'ember';
 import { moduleForComponent, test } from 'ember-qunit';
-import { skip } from 'qunit';
 import hbs from 'htmlbars-inline-precompile';
 import config from 'ember-easy-form/config';
 
@@ -140,10 +139,10 @@ test('submitting with ember-data model without validations can call submit actio
   assert.ok(submitCalled, 'submit was not called');
 });
 
-skip('uses the specified model as the basis for {{input}} property lookup', function(assert) {
+test('uses the specified model as the basis for {{input}} property lookup', function(assert) {
   this.set('foo', "BORING");
   this.set('theModel', { foo: "LOL" });
-  this.render(hbs`{{#form-for theModel}}{{input foo name="easy-input"}} <div id="asl">{{foo}}</div> {{input id="ember-input" value=foo}}{{/form-for}}`);
+  this.render(hbs`{{#form-for theModel}}{{form-input "foo" name="easy-input"}} <div id="asl">{{foo}}</div> {{input id="ember-input" value=foo}}{{/form-for}}`);
 
   assert.equal(this.$('input[name="easy-input"]').val(), "LOL", "easy-input uses form-for's model as its context for looking up its property");
   assert.equal(this.$('#ember-input').val(), "BORING", "vanilla ember inputs are unaffected by form-for");

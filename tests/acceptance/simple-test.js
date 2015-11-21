@@ -1,5 +1,5 @@
 import Ember from 'ember';
-import { module, skip } from 'qunit';
+import { module, test } from 'qunit';
 import startApp from '../../tests/helpers/start-app';
 
 module('Acceptance | simple', {
@@ -12,7 +12,7 @@ module('Acceptance | simple', {
   }
 });
 
-skip('displays form values', function(assert) {
+test('displays form values', function(assert) {
   visit('/person');
 
   andThen(() => {
@@ -33,7 +33,7 @@ skip('displays form values', function(assert) {
   });
 });
 
-skip('displays errors', function(assert) {
+test('displays errors', function(assert) {
   visit('/person');
 
   // Initial state
