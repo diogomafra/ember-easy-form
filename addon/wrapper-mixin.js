@@ -1,7 +1,7 @@
 import Ember from 'ember';
 import config from 'ember-easy-form/config';
 
-export default Ember.View.extend({
+export default Ember.Mixin.create({
   classNameBindings: ['property'],
   wrapper: Ember.computed(function() {
     var wrapperView = this.nearestWithProperty('wrapper');
@@ -32,7 +32,7 @@ export default Ember.View.extend({
   //   } else {
   //     return this.get('context');
   //   }
-  // }),
+  // })
   init: function() {
     this._super(...arguments);
     var pathToProperty = 'model';

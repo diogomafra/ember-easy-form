@@ -34,3 +34,49 @@ export function processOptions(property, options) {
 
   return options;
 }
+
+function getPropertyType(model, key) {
+  if (model && model.constructor.proto) {
+    var proto = model.constructor.proto();
+    var possibleDesc = proto[key];
+    var desc = (possibleDesc !== null && typeof possibleDesc === 'object' && possibleDesc.isDescriptor) ? possibleDesc : undefined;
+    if (desc && desc._meta) {
+      return desc._meta.type;
+    }
+  }
+  return null;
+}
+
+export function getTypeForValue(forcedType, property, model, value) {
+  if (forcedType) {
+    return forcedType;
+  }
+
+  if (!property) {
+    return 'text';
+  }
+
+  if (property.match(/password/)) {
+    return 'password';
+  } else if (property.match(/email/)) {
+    return 'email';
+  } else if (property.match(/url/)) {
+    return 'url';
+  } else if (property.match(/color/)) {
+    return 'color';
+  } else if (property.match(/^tel/)) {
+    return 'tel';
+  } else if (property.match(/search/)) {
+    return 'search';
+  } else {
+    if (getPropertyType(model, property) === 'number' || typeof(value) === 'number') {
+      return 'number';
+    } else if (getPropertyType(model, property) === 'date' || (!Ember.isNone(value) && value.constructor === Date)) {
+      return 'date';
+    } else if (getPropertyType(model, property) === 'boolean' || (!Ember.isNone(value) && value.constructor === Boolean)) {
+      return 'checkbox';
+    }
+  }
+
+  return 'text';
+}
