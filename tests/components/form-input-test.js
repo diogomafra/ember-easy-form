@@ -206,7 +206,7 @@ test('uses the defined template name', function(assert) {
   assert.equal(this.$().text(), 'My custom template | First name');
 });
 
-skip('sets input attributes property as bindings', function(assert) {
+test('sets input attributes property as bindings', function(assert) {
   this.setProperties({
     placeholder: 'The placeholder',
     label: 'My label',

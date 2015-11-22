@@ -34,7 +34,7 @@ export default {
     if (!componentName) {
       componentName = 'input-text-field';
     }
-
+// debugger;
     // Set all attributes
     var options = env.hooks.getValue(hash.inputOptions);
     if (options) {

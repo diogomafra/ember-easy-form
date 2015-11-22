@@ -52,9 +52,28 @@ var FormInputComponent = BaseComponent.extend({
 
     var bindInputOptions = function() {
       var values = {};
+// debugger;
       for (var i = 0; i < allOptions.length; i++) {
         values[allOptions[i]] = this.get(allOptions[i]);
       }
+      var savedHash = this.get('savedHash');
+      if (savedHash) {
+        var bindableInputOptions = ['placeholder', 'prompt', 'disabled'];
+        for (var j = 0; j < bindableInputOptions.length; j++) {
+          var key = bindableInputOptions[j];
+          if (savedHash[key]) {
+            values[key] = savedHash[key];
+          }
+        }
+      }
+      // for (i = 0; i < bindableInputOptions.length; i++) {
+      //   key = bindableInputOptions[i];
+      //   keyBinding = key + 'Binding';
+      //   if (this[key] || this[keyBinding]) {
+      //     options[keyBinding] = 'view.' + key;
+      //   }
+      // }
+
       return values;
     };
     Ember.defineProperty(this, 'inputOptions', Ember.computed.apply(null, allOptions.concat(bindInputOptions)));
