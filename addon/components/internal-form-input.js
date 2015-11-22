@@ -80,6 +80,7 @@ var FormInputComponent = BaseComponent.extend({
   },
   setupValidationDependencies: Ember.on('init', function() {
     // debugger;
+    this._keysForValidationDependencies = Ember.A();
     var keys = this.get('formForModel._dependentValidationKeys'), key;
     if (keys) {
       var propertyName = this.get('propertyName');

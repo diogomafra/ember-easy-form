@@ -32,7 +32,6 @@ export default {
         savedHash[key] = hash[key];
       }
     }
-
     return assign({}, lastState, { savedHash: savedHash });
   },
 
