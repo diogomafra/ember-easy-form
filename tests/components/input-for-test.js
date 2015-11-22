@@ -12,7 +12,7 @@ const ErrorsObject = Ember.Object.extend({
   }
 });
 
-moduleForComponent('form-input', 'Integration | Component | form input', {
+moduleForComponent('input-for', 'Integration | Component | form input', {
   integration: true,
   beforeEach: function() {
     setup();
@@ -25,14 +25,14 @@ moduleForComponent('form-input', 'Integration | Component | form input', {
 });
 
 test('renders semantic form elements', function(assert) {
-  this.render(hbs`{{#form-for model}}{{form-input "firstName"}}{{/form-for}}`);
+  this.render(hbs`{{#form-for model}}{{input-for "firstName"}}{{/form-for}}`);
   assert.equal(this.$().find('label').text(), 'First name');
   assert.equal(this.$().find('input').val(), 'Brian');
   assert.equal(this.$().find('input').attr('type'), 'text');
 });
 
 test('does not render error tag when context does not have errors object', function(assert) {
-  this.render(hbs`{{#form-for model}}{{form-input "firstName"}}{{/form-for}}`);
+  this.render(hbs`{{#form-for model}}{{input-for "firstName"}}{{/form-for}}`);
   assert.ok(!this.$().find('div.fieldWithErrors').get(0));
   assert.ok(!this.$().find('span.error').get(0));
   Ember.run(() => {
@@ -47,7 +47,7 @@ test('renders error for invalid data', function(assert) {
     this.get('model.errors.firstName').pushObject("can't be blank");
   });
 
-  this.render(hbs`{{#form-for model}}{{form-input "firstName"}}{{/form-for}}`);
+  this.render(hbs`{{#form-for model}}{{input-for "firstName"}}{{/form-for}}`);
   assert.ok(!this.$().find('div.fieldWithErrors').get(0));
   assert.ok(!this.$().find('span.error').get(0));
 
@@ -97,7 +97,7 @@ test('renders errors properly with dependent keys', function(assert) {
   Ember.run(() => {
     this.get('model.errors.passwordConfirmation').pushObject("does not match password");
   });
-  this.render(hbs`{{#form-for model}}{{form-input "password"}}{{form-input "passwordConfirmation"}}{{/form-for}}`);
+  this.render(hbs`{{#form-for model}}{{input-for "password"}}{{input-for "passwordConfirmation"}}{{/form-for}}`);
   assert.ok(!this.$().find('.passwordConfirmation').hasClass('fieldWithErrors'));
   assert.ok(!this.$().find('.passwordConfirmation').find('span.error').get(0));
   //
@@ -136,22 +136,22 @@ test('renders errors properly with dependent keys', function(assert) {
 });
 
 test('allows label text to be set', function(assert) {
-  this.render(hbs`{{#form-for model}}{{form-input "firstName" label="Your First Name"}}{{/form-for}}`);
+  this.render(hbs`{{#form-for model}}{{input-for "firstName" label="Your First Name"}}{{/form-for}}`);
   assert.equal(this.$().find('label').text(), 'Your First Name');
 });
 
 test('allows hint text to be set', function(assert) {
-  this.render(hbs`{{#form-for model}}{{form-input "firstName" hint="My hint text"}}{{/form-for}}`);
+  this.render(hbs`{{#form-for model}}{{input-for "firstName" hint="My hint text"}}{{/form-for}}`);
   assert.equal(this.$().find('span.hint').text(), 'My hint text');
 });
 
 test('does not show hint span when there is no hint', function(assert) {
-  this.render(hbs`{{#form-for model}}{{form-input "firstName"}}{{/form-for}}`);
+  this.render(hbs`{{#form-for model}}{{input-for "firstName"}}{{/form-for}}`);
   assert.equal(this.$().find('span.hint').length, 0);
 });
 
 skip('block form for input', function(assert) {
-  this.render(hbs`{{#form-for model}}{{#form-input "firstName"}}{{label-field "firstName"}}{{input-field "firstName"}}{{error-field "firstName"}}{{/form-input}}{{/form-for}}`);
+  this.render(hbs`{{#form-for model}}{{#input-for "firstName"}}{{label-field "firstName"}}{{input-field "firstName"}}{{error-field "firstName"}}{{/input-for}}{{/form-for}}`);
 
   var input = this.$().find('input');
   var label = this.$().find('label');
@@ -163,13 +163,13 @@ skip('block form for input', function(assert) {
 });
 
 test('block form for input without label', function(assert) {
-  this.render(hbs`{{#form-for model}}{{#form-input "firstName"}}{{input-field "firstName"}}{{/form-input}}{{/form-for}}`);
+  this.render(hbs`{{#form-for model}}{{#input-for "firstName"}}{{input-field "firstName"}}{{/input-for}}{{/form-for}}`);
   assert.equal(this.$().find('input').val(), 'Brian');
   assert.equal(this.$().find('input').attr('type'), 'text');
 });
 
 test('sets input attributes property', function(assert) {
-  this.render(hbs`{{#form-for model}}{{form-input "receiveAt" as="email" placeholder="Your email" disabled=true}}{{/form-for}}`);
+  this.render(hbs`{{#form-for model}}{{input-for "receiveAt" as="email" placeholder="Your email" disabled=true}}{{/form-for}}`);
   var input = this.$().find('input');
   assert.equal(input.prop('type'), 'email');
   assert.equal(input.prop('placeholder'), 'Your email');
@@ -189,7 +189,7 @@ test('uses the wrapper config', function(assert) {
   Ember.run(() => {
     this.get('model.errors.firstName').pushObject("can't be blank");
   });
-  this.render(hbs`{{#form-for model wrapper="my_wrapper"}}{{form-input "firstName"}}{{/form-for}}`);
+  this.render(hbs`{{#form-for model wrapper="my_wrapper"}}{{input-for "firstName"}}{{/form-for}}`);
   Ember.run(() => {
     this.$().find('input').blur();
   });
@@ -202,7 +202,7 @@ test('uses the defined template name', function(assert) {
   this.container.register('template:custom-input-template', hbs`My custom template | {{label-field property=propertyName}}`);
   config.registerWrapper('my_wrapper', {inputTemplate: 'custom-input-template'});
 
-  this.render(hbs`{{#form-for model wrapper="my_wrapper"}}{{form-input "firstName"}}{{/form-for}}`);
+  this.render(hbs`{{#form-for model wrapper="my_wrapper"}}{{input-for "firstName"}}{{/form-for}}`);
   assert.equal(this.$().text(), 'My custom template | First name');
 });
 
@@ -212,7 +212,7 @@ test('sets input attributes property as bindings', function(assert) {
     label: 'My label',
     hint: 'Some hint'
   });
-  this.render(hbs`{{#form-for model}}{{form-input "firstName" placeholderBinding="placeholder" labelBinding="label" hintBinding="hint"}}{{/form-for}}`);
+  this.render(hbs`{{#form-for model}}{{input-for "firstName" placeholderBinding="placeholder" labelBinding="label" hintBinding="hint"}}{{/form-for}}`);
   assert.equal(this.$().find('input').prop('placeholder'), 'The placeholder');
   assert.equal(this.$().find('label').text(), 'My label');
   assert.equal(this.$().find('.hint').text(), 'Some hint');
@@ -237,7 +237,7 @@ test('sets select prompt property as bindings', function(assert) {
     hint: 'Some hint',
     prompt: 'The prompt'
   });
-  this.render(hbs`{{#form-for model}}{{form-input "firstName" as="select" collection=countries label=label hint=hint prompt=prompt}}{{/form-for}}`);
+  this.render(hbs`{{#form-for model}}{{input-for "firstName" as="select" collection=countries label=label hint=hint prompt=prompt}}{{/form-for}}`);
 
   assert.equal(this.$().find('option').text(), 'The prompt');
   assert.equal(this.$().find('label').text(), 'My label');
@@ -257,25 +257,25 @@ test('sets select prompt property as bindings', function(assert) {
 });
 
 test('defaults the name property', function(assert) {
-  this.render(hbs`{{#form-for model}}{{form-input "firstName"}}{{/form-for}}`);
+  this.render(hbs`{{#form-for model}}{{input-for "firstName"}}{{/form-for}}`);
   console.log(this.$().html());
   assert.equal(this.$().find('input').prop('name'), "firstName");
 });
 
 test('allows specifying the name property', function(assert) {
-  this.render(hbs`{{#form-for model}}{{form-input "firstName" name="some-other-name"}}{{/form-for}}`);
+  this.render(hbs`{{#form-for model}}{{input-for "firstName" name="some-other-name"}}{{/form-for}}`);
   assert.equal(this.$().find('input').prop('name'), "some-other-name");
 });
 
 test('scopes property lookup to model declared in form-for', function(assert){
   this.set('someOtherModel', Ember.Object.create({firstName: 'Robert'}));
 
-  this.render(hbs`{{#form-for someOtherModel}}{{form-input "firstName"}}{{/form-for}}`);
+  this.render(hbs`{{#form-for someOtherModel}}{{input-for "firstName"}}{{/form-for}}`);
   assert.equal(this.$().find('input').val(), "Robert");
 });
 
 skip('sets input as="date" attributes properly', function(assert) {
-  this.render(hbs`{{#form-for model}}{{form-input "receiveAt" as="date"}}{{/form-for}}`);
+  this.render(hbs`{{#form-for model}}{{input-for "receiveAt" as="date"}}{{/form-for}}`);
   assert.equal(this.$().find('input').prop('type'), "date");
 });
 
@@ -290,6 +290,6 @@ skip('{{ember-input}} uses the original Ember {{input}} helper', function(assert
 });
 
 test('adds a class to the parent div for the property name', function(assert) {
-  this.render(hbs`{{#form-for model}}{{form-input "firstName" labelClass="blammo"}}{{/form-for}}`);
+  this.render(hbs`{{#form-for model}}{{input-for "firstName" labelClass="blammo"}}{{/form-for}}`);
   assert.equal(this.$().find('div.input.firstName input').val(), 'Brian');
 });

@@ -35,9 +35,11 @@ export default Ember.Component.extend({
   // })
   init: function() {
     this._super(...arguments);
+    // debugger;
     var pathToProperty = 'model';
     var currentView = this;
     while(currentView && !('model' in currentView)) {
+      console.log('C: ', currentView);
       pathToProperty = 'parentView.' + pathToProperty;
       currentView = Ember.get(currentView, 'parentView');
     }

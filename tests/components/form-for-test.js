@@ -142,7 +142,7 @@ test('submitting with ember-data model without validations can call submit actio
 test('uses the specified model as the basis for {{input}} property lookup', function(assert) {
   this.set('foo', "BORING");
   this.set('theModel', { foo: "LOL" });
-  this.render(hbs`{{#form-for theModel}}{{form-input "foo" name="easy-input"}} <div id="asl">{{foo}}</div> {{input id="ember-input" value=foo}}{{/form-for}}`);
+  this.render(hbs`{{#form-for theModel}}{{input-for "foo" name="easy-input"}} <div id="asl">{{foo}}</div> {{input id="ember-input" value=foo}}{{/form-for}}`);
 
   assert.equal(this.$('input[name="easy-input"]').val(), "LOL", "easy-input uses form-for's model as its context for looking up its property");
   assert.equal(this.$('#ember-input').val(), "BORING", "vanilla ember inputs are unaffected by form-for");
