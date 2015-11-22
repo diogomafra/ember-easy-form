@@ -53,12 +53,15 @@ var FormInputComponent = BaseComponent.extend({
     var bindInputOptions = function() {
       var values = {};
 // debugger;
-      for (var i = 0; i < allOptions.length; i++) {
-        values[allOptions[i]] = this.get(allOptions[i]);
-      }
+  // debugger;
+      // for (var i = 0; i < allOptions.length; i++) {
+      //   values[allOptions[i]] = this.get(allOptions[i]);
+      // }
       var savedHash = this.get('savedHash');
       if (savedHash) {
-        var bindableInputOptions = ['placeholder', 'prompt', 'disabled'];
+        const bindableInputOptions =  ['as', 'collection', 'optionValuePath', 'optionLabelPath',
+                            'selection', 'multiple', 'name', 'placeholder', 'prompt', 'disabled'];
+        // var bindableInputOptions = ['placeholder', 'prompt', 'disabled'];
         for (var j = 0; j < bindableInputOptions.length; j++) {
           var key = bindableInputOptions[j];
           if (savedHash[key]) {

@@ -166,30 +166,31 @@ test('uses the custom input type when defined', function(assert) {
   assert.equal(this.$().find('input').val(), 'Cardarella');
 });
 
-skip('generates a select input and options', function(assert) {
-  this.render(hbs`{{#form-for model}}{{input-field "country" as="select" collection="optionsForCountry"}}{{/form-for}}`);
+test('generates a select input and options', function(assert) {
+  this.render(hbs`{{#form-for model}}{{input-field "country" as="select" collection=optionsForCountry}}{{/form-for}}`);
   assert.equal(this.$().find('select').length, 1);
   assert.equal(this.$().find('select option').length, 2);
 });
 
-skip('generates a select input and options with prompt', function(assert) {
-  this.render(hbs`{{#form-for model}}{{input-field "country" as="select" collection="optionsForCountry" prompt="Select Country"}}{{/form-for}}`);
+test('generates a select input and options with prompt', function(assert) {
+  this.render(hbs`{{#form-for model}}{{input-field "country" as="select" collection=optionsForCountry prompt="Select Country"}}{{/form-for}}`);
   assert.equal(this.$().find('select').length, 1);
   assert.equal(this.$().find('select option').length, 3);
 });
 
-skip('generates a select input with correct selection', function(assert) {
-  this.render(hbs`{{#form-for model}}{{input-field "country" as="select" collection="optionsForCountry" selection="country" optionValuePath="content.id" optionLabelPath="content.name"}}{{/form-for}}`);
+test('generates a select input with correct selection', function(assert) {
+  this.render(hbs`{{#form-for model}}{{input-field "country" as="select" collection=optionsForCountry selection=model.country optionValuePath="content.id" optionLabelPath="content.name"}}{{/form-for}}`);
   assert.ok(this.$().find('select option:selected').html().match(/United States/));
 });
 
-skip('generates a select input with correct selection when no selection is specified', function(assert) {
-  this.render(hbs`{{#form-for model}}{{input-field "country" as="select" collection="optionsForCountry" optionValuePath="content.id" optionLabelPath="content.name"}}{{/form-for}}`);
+test('generates a select input with correct selection when no selection is specified', function(assert) {
+  this.render(hbs`{{#form-for model}}{{input-field "country" as="select" collection=optionsForCountry optionValuePath="content.id" optionLabelPath="content.name"}}{{/form-for}}`);
   assert.ok(this.$().find('select option:selected').html().match(/United States/));
 });
 
-skip('generates a select input correct value', function(assert) {
-  this.render(hbs`{{#form-for model}}{{input-field "country" as="select" collection="optionsForCountry" value="country.id" optionValuePath="content.id" optionLabelPath="content.name"}}{{/form-for}}`);
+test('generates a select input correct value', function(assert) {
+  this.set('model.selectedValue', {id: 1});
+  this.render(hbs`{{#form-for model}}{{input-field "country" as="select" collection=optionsForCountry value="selectedValue.id" optionValuePath="content.id" optionLabelPath="content.name"}}{{/form-for}}`);
   assert.ok(this.$().find('select option:selected').html().match(/United States/));
 });
 

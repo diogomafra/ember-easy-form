@@ -230,13 +230,14 @@ test('sets input attributes property as bindings', function(assert) {
   assert.equal(this.$().find('.hint').text(), 'Usually different than your last name');
 });
 
-skip('sets select prompt property as bindings', function(assert) {
+test('sets select prompt property as bindings', function(assert) {
   this.setProperties({
+    countries: [],
     label: 'My label',
     hint: 'Some hint',
     prompt: 'The prompt'
   });
-  this.render(hbs`{{#form-for model}}{{input firstName as="select" labelBinding="label" hintBinding="hint" promptBinding="prompt"}}{{/form-for}}`);
+  this.render(hbs`{{#form-for model}}{{form-input "firstName" as="select" collection=countries label=label hint=hint prompt=prompt}}{{/form-for}}`);
 
   assert.equal(this.$().find('option').text(), 'The prompt');
   assert.equal(this.$().find('label').text(), 'My label');
@@ -257,6 +258,7 @@ skip('sets select prompt property as bindings', function(assert) {
 
 test('defaults the name property', function(assert) {
   this.render(hbs`{{#form-for model}}{{form-input "firstName"}}{{/form-for}}`);
+  console.log(this.$().html());
   assert.equal(this.$().find('input').prop('name'), "firstName");
 });
 
@@ -289,6 +291,5 @@ skip('{{ember-input}} uses the original Ember {{input}} helper', function(assert
 
 test('adds a class to the parent div for the property name', function(assert) {
   this.render(hbs`{{#form-for model}}{{form-input "firstName" labelClass="blammo"}}{{/form-for}}`);
-  console.log(this.$().html());
   assert.equal(this.$().find('div.input.firstName input').val(), 'Brian');
 });

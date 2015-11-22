@@ -3,7 +3,7 @@
 {{#form-for model}}
   {{form-input "firstName"}}
   {{form-input "lastName"}}
-  {{form-input "city" as="select" collection="controller.cities"}}
+  {{form-input "city" as="select" collection=controller.cities}}
   {{form-input controller.welcomeMessage
           class="welcomeMessage"
           label="Message"

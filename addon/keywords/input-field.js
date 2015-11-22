@@ -22,6 +22,17 @@ function assign(original, ...args) {
 
 export default {
   setupState(lastState, env, scope, params, hash) {
+    // Set all attributes
+    var options = env.hooks.getValue(hash.inputOptions);
+    if (options) {
+      for (var prop in options) {
+        if (options.hasOwnProperty(prop)) {
+          hash[prop] = options[prop];
+        }
+      }
+    }
+    hash.inputOptions = null;
+
     // Find the component name
     let componentName;
     let componentAs = env.hooks.getValue(hash.as);
@@ -30,19 +41,13 @@ export default {
       if (!componentName && componentAs === 'text') {
         componentName = 'input-text-area';
       }
+      if (!componentName && componentAs === 'select') {
+        componentName = 'form-select';
+      }
     }
     if (!componentName) {
       componentName = 'input-text-field';
     }
-// debugger;
-    // Set all attributes
-    var options = env.hooks.getValue(hash.inputOptions);
-    if (options) {
-      for (var prop in options) {
-        hash[prop] = options[prop];
-      }
-    }
-    hash.inputOptions = null;
 
     let propertyName = env.hooks.getValue(params[0]) || env.hooks.getValue(hash.property);
     let forcedType = env.hooks.getValue(hash.as) || env.hooks.getValue(hash.type);
@@ -57,6 +62,9 @@ export default {
   render(morph, env, scope, params, hash, template, inverse, visitor) {
     hash.type = morph.state.type;
     hash.property = morph.state.property;
+    if (!hash.name) {
+      hash.name = morph.state.property;
+    }
     env.hooks.component(morph, env, scope, morph.state.componentName, params, hash, { default: template, inverse }, visitor);
   },
 

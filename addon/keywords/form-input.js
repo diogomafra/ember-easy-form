@@ -25,9 +25,18 @@ export default {
     // Find the component name
     let savedHash = {};
     // inputOptions: ['as', 'collection', 'optionValuePath', 'optionLabelPath', 'selection', 'value', 'multiple', 'name'],
-    const bindableInputOptions = ['placeholder', 'prompt', 'disabled'];
-    for(let i=0; i<bindableInputOptions.length; i++) {
-      const key = bindableInputOptions[i];
+    // const bindableInputOptions = ['placeholder', 'prompt', 'disabled'];
+    // for(let i=0; i<bindableInputOptions.length; i++) {
+    //   const key = bindableInputOptions[i];
+    //   if (hash[key]) {
+    //     savedHash[key] = hash[key];
+    //   }
+    // }
+
+    const allOptions =  ['as', 'collection', 'optionValuePath', 'optionLabelPath',
+    'selection', 'multiple', 'name', 'placeholder', 'prompt', 'disabled'];
+    for(let i=0; i<allOptions.length; i++) {
+      const key = allOptions[i];
       if (hash[key]) {
         savedHash[key] = hash[key];
       }
