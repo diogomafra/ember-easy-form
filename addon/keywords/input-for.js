@@ -45,7 +45,9 @@ export default {
   },
 
   render(morph, env, scope, params, hash, template, inverse, visitor) {
-    hash.savedHash = morph.state.savedHash;
+    // TODO: Ember 2.* uses getState()
+    var state = morph.getState ? morph.getState() : morph.state;
+    hash.savedHash = state.savedHash;
     env.hooks.component(morph, env, scope, 'internal-form-input', params, hash, { default: template, inverse }, visitor);
   },
 

@@ -34,12 +34,10 @@ test('submit as button disabled state is bound to models valid state', function(
   });
 
   this.render(hbs`{{#form-for model}}{{submit as="button"}}{{/form-for}}`);
-  console.log(this.$().html());
   assert.equal(this.$().find('button').prop('disabled'), true);
   Ember.run(function() {
     Ember.set(model,'isValid', true);
   });
-  console.log(this.$().html());
   assert.equal(this.$().find('button').prop('disabled'), false);
 });
 
@@ -59,7 +57,6 @@ test('submit button disabled state is bound to models valid state', function(ass
   });
 
   this.render(hbs`{{#form-for model}}{{submit}}{{/form-for}}`);
-  console.log(this.$().html());
   assert.equal(this.$().find('input').prop('disabled'), true);
   Ember.run(function() {
     Ember.set(model,'isValid', true);

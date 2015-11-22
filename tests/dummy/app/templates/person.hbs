@@ -3,8 +3,8 @@
 {{#form-for model}}
   {{input-for "firstName"}}
   {{input-for "lastName"}}
-  {{input-for "city" as="select" collection=controller.cities}}
-  {{input-for controller.welcomeMessage
+  {{input-for "city" as="select" collection=cities}}
+  {{input-for "controller.welcomeMessage"
           class="welcomeMessage"
           label="Message"
           hint="Property defined in the controller."}}
@@ -15,7 +15,7 @@
   First name: <span class="first-name">{{model.firstName}}</span><br>
   Last name: <span class="last-name">{{model.lastName}}</span><br>
   City: <span class="city">{{model.city}}</span><br>
-  Welcome message: <span class="welcome-message">{{controller.welcomeMessage}}</span>
+  Welcome message: <span class="welcome-message">{{welcomeMessage}}</span>
 </p>
 
 {{#if submitted}}

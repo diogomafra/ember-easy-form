@@ -60,12 +60,14 @@ export default {
   },
 
   render(morph, env, scope, params, hash, template, inverse, visitor) {
-    hash.type = morph.state.type;
-    hash.property = morph.state.property;
+    // TODO: Ember 2.* uses getState()
+    var state = morph.getState ? morph.getState() : morph.state;
+    hash.type = state.type;
+    hash.property = state.property;
     if (!hash.name) {
-      hash.name = morph.state.property;
+      hash.name = state.property;
     }
-    env.hooks.component(morph, env, scope, morph.state.componentName, params, hash, { default: template, inverse }, visitor);
+    env.hooks.component(morph, env, scope, state.componentName, params, hash, { default: template, inverse }, visitor);
   },
 
   rerender(...args) {

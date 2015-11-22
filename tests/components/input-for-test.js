@@ -258,7 +258,6 @@ test('sets select prompt property as bindings', function(assert) {
 
 test('defaults the name property', function(assert) {
   this.render(hbs`{{#form-for model}}{{input-for "firstName"}}{{/form-for}}`);
-  console.log(this.$().html());
   assert.equal(this.$().find('input').prop('name'), "firstName");
 });
 
