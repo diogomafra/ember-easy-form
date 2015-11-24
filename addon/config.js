@@ -9,10 +9,11 @@ export default {
       errorClass: 'error',
       hintClass: 'hint',
       labelClass: '',
-      inputTemplate: 'components/easy-form/form-input',
+      inputTemplate: 'components/easy-form/input-for',
       errorTemplate: 'components/easy-form/error-field',
       labelTemplate: 'components/easy-form/label-field',
       hintTemplate: 'components/easy-form/hint-field',
+      submitButtonTemplate: 'components/easy-form/submit-button',
       wrapControls: false,
       controlsWrapperClass: '',
       buttonClass: ''

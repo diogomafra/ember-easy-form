@@ -6,13 +6,13 @@ var SubmitButtonComponent = Ember.Component.extend(WrapperMixin, {
   tagName: 'input',
   type: 'submit',
   disabled: Ember.computed.not('formForModel.isValid'),
-  value: Ember.computed('valueText', function() {
-    return this.get('valueText') || 'Submit';
+  value: Ember.computed('textValue', function() {
+    return this.get('textValue') || 'Submit';
   })
 });
 
 SubmitButtonComponent.reopenClass({
-  positionalParams: ['valueText']
+  positionalParams: ['textValue']
 });
 
 export default SubmitButtonComponent;

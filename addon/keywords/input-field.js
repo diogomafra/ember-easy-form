@@ -1,24 +1,6 @@
 import Ember from 'ember';
 import config from 'ember-easy-form/config';
-import {getTypeForValue} from 'ember-easy-form/utilities';
-
-// https://github.com/emberjs/ember.js/blob/master/packages/ember-metal/lib/assign.js
-function assign(original, ...args) {
-  for (let i = 0, l = args.length; i < l; i++) {
-    let arg = args[i];
-    if (!arg) { continue; }
-
-    let updates = Object.keys(arg);
-
-    for (let i = 0, l = updates.length; i < l; i++) {
-      let prop = updates[i];
-      original[prop] = arg[prop];
-    }
-  }
-
-  return original;
-}
-
+import {getTypeForValue, assign} from 'ember-easy-form/utilities';
 
 export default {
   setupState(lastState, env, scope, params, hash) {

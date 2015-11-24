@@ -1,25 +1,14 @@
 import Ember from 'ember';
 import WrapperMixin from 'ember-easy-form/wrapper-mixin';
 
-var InputTextFieldComponent = Ember.TextField.extend(WrapperMixin, {
-  init() {
+export default Ember.TextField.extend(WrapperMixin, {\
+  init: function() {
     this._super(...arguments);
-    var propertyName = this.get('property');
-    var dependentKey = 'formForModel.' + propertyName;
-    this.set('value', Ember.computed(dependentKey, {
-      get: function() {
-        return this.get(dependentKey);
-      },
-      set: function(key, value) {
-        this.set(dependentKey, value);
-        return value;
-      }
-    }));
+    var dependentKey = 'formForModel.' + this.get('property');
+    Ember.Binding.from(dependentKey).to('value').connect(this);
     if (this.get('type') === 'checkbox') {
-      this.set('checked', Ember.computed.alias(dependentKey));
+      Ember.Binding.from(dependentKey).to('checked').connect(this);
       this.get('attributeBindings').push('checked');
     }
   }
 });
-
-export default InputTextFieldComponent;

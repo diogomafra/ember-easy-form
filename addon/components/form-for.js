@@ -7,10 +7,12 @@ var FormFormComponent = Ember.Component.extend(WrapperMixin, {
   classNameBindings: ['wrapperConfig.formClass'],
   novalidate: 'novalidate',
   wrapper: 'default',
+
   init: function() {
-    this._super();
+    this._super(...arguments);
     this.action = this.action || 'submit';
   },
+
   submit: function(event) {
     var _this = this,
         promise;

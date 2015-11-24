@@ -2,18 +2,18 @@ import Ember from 'ember';
 import WrapperMixin from 'ember-easy-form/wrapper-mixin';
 
 var SubmitButtonComponent = Ember.Component.extend(WrapperMixin, {
-  tagName: 'button',
-  layoutName: 'components/easy-form/button',
   attributeBindings: ['type', 'disabled'],
+  tagName: 'button',
+  layoutName: Ember.computed.oneWay('wrapperConfig.submitButtonTemplate'),
   type: 'submit',
   disabled: Ember.computed.not('formForModel.isValid'),
-  text: Ember.computed('valueText', function() {
-    return this.get('valueText') || 'Submit';
+  text: Ember.computed('textValue', function() {
+    return this.get('textValue') || 'Submit';
   })
 });
 
 SubmitButtonComponent.reopenClass({
-  positionalParams: ['valueText']
+  positionalParams: ['textValue']
 });
 
 export default SubmitButtonComponent;
