@@ -1,11 +1,11 @@
 import Ember from 'ember';
-import BaseComponent from 'ember-easy-form/components/base';
+import WrapperMixin from 'ember-easy-form/wrapper-mixin';
 import {humanize} from 'ember-easy-form/utilities';
 
 var allOptions =  ['as', 'collection', 'optionValuePath', 'optionLabelPath',
 'selection', 'multiple', 'name', 'placeholder', 'prompt', 'disabled'];
 
-var FormInputComponent = BaseComponent.extend({
+var FormInputComponent =Ember.Component.extend(WrapperMixin, {
   layoutName: Ember.computed.oneWay('wrapperConfig.inputTemplate'),
 
   model: Ember.computed(function() {
@@ -52,11 +52,6 @@ var FormInputComponent = BaseComponent.extend({
 
     var bindInputOptions = function() {
       var values = {};
-// debugger;
-  // debugger;
-      // for (var i = 0; i < allOptions.length; i++) {
-      //   values[allOptions[i]] = this.get(allOptions[i]);
-      // }
       var savedHash = this.get('savedHash');
       if (savedHash) {
         const bindableInputOptions =  ['as', 'collection', 'optionValuePath', 'optionLabelPath',
@@ -69,20 +64,12 @@ var FormInputComponent = BaseComponent.extend({
           }
         }
       }
-      // for (i = 0; i < bindableInputOptions.length; i++) {
-      //   key = bindableInputOptions[i];
-      //   keyBinding = key + 'Binding';
-      //   if (this[key] || this[keyBinding]) {
-      //     options[keyBinding] = 'view.' + key;
-      //   }
-      // }
 
       return values;
     };
     Ember.defineProperty(this, 'inputOptions', Ember.computed.apply(null, allOptions.concat(bindInputOptions)));
   },
   setupValidationDependencies: Ember.on('init', function() {
-    // debugger;
     this._keysForValidationDependencies = Ember.A();
     var keys = this.get('formForModel._dependentValidationKeys'), key;
     if (keys) {

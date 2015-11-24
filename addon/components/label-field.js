@@ -1,17 +1,8 @@
 import Ember from 'ember';
-import BaseComponent from 'ember-easy-form/components/base';
+import WrapperMixin from 'ember-easy-form/wrapper-mixin';
 import {humanize} from 'ember-easy-form/utilities';
 
-// var LabelFieldComponent = Ember.Component.extend(WrapperMixin, {
-//   tagName: 'label',
-//   layoutName: Ember.computed.oneWay('wrapperConfig.labelTemplate'),
-//   classNameBindings: ['wrapperConfig.labelClass'],
-//   labelText: Ember.computed('text', 'property', 'propertyName', function() {
-//     return this.get('text') || humanize(this.get('property') || this.get('propertyName'));
-//   })
-// });
-
-var LabelFieldComponent = BaseComponent.extend({
+var LabelFieldComponent = Ember.Component.extend(WrapperMixin, {
   tagName: 'label',
   attributeBindings: ['for'],
   classNameBindings: ['wrapperConfig.labelClass'],
