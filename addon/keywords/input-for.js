@@ -1,31 +1,22 @@
 import {assign} from 'ember-easy-form/utilities';
 
-export default {
-  setupState(lastState, env, scope, params, hash) {
-    // Find the component name
-    let savedHash = {};
-    // inputOptions: ['as', 'collection', 'optionValuePath', 'optionLabelPath', 'selection', 'value', 'multiple', 'name'],
-    // const bindableInputOptions = ['placeholder', 'prompt', 'disabled'];
-    // for(let i=0; i<bindableInputOptions.length; i++) {
-    //   const key = bindableInputOptions[i];
-    //   if (hash[key]) {
-    //     savedHash[key] = hash[key];
-    //   }
-    // }
+const allOptions =  ['as', 'collection', 'optionValuePath', 'optionLabelPath',
+                     'selection', 'multiple', 'name', 'placeholder', 'prompt', 'disabled'];
 
-    const allOptions =  ['as', 'collection', 'optionValuePath', 'optionLabelPath',
-    'selection', 'multiple', 'name', 'placeholder', 'prompt', 'disabled'];
+export default {
+  setupState(state, env, scope, params, hash) {
+    let savedHash = {};
     for(let i=0; i<allOptions.length; i++) {
       const key = allOptions[i];
-      if (hash[key]) {
+      if (hash.hasOwnProperty(key)) {
         savedHash[key] = hash[key];
       }
     }
-    return assign({}, lastState, { savedHash: savedHash });
+    return assign({}, state, { savedHash: savedHash });
   },
 
   render(morph, env, scope, params, hash, template, inverse, visitor) {
-    // TODO: Ember 2.* uses getState()
+    // Use `state` on Ember < 2.2 and `getState()` on Ember >= 2.2
     var state = morph.getState ? morph.getState() : morph.state;
     hash.savedHash = state.savedHash;
     env.hooks.component(morph, env, scope, 'internal-form-input', params, hash, { default: template, inverse }, visitor);

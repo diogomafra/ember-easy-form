@@ -3,8 +3,8 @@ import config from 'ember-easy-form/config';
 import {getTypeForValue, assign} from 'ember-easy-form/utilities';
 
 export default {
-  setupState(lastState, env, scope, params, hash) {
-    // Set all attributes
+  setupState(state, env, scope, params, hash) {
+    // Set all properties
     var options = env.hooks.getValue(hash.inputOptions);
     if (options) {
       for (var prop in options) {
@@ -38,11 +38,11 @@ export default {
     var value = model ? Ember.get(model, propertyName) : null;
     var type = getTypeForValue(forcedType, propertyName, model, value);
 
-    return assign({}, lastState, { componentName, type: type, property: propertyName });
+    return assign({}, state, { componentName, type: type, property: propertyName });
   },
 
   render(morph, env, scope, params, hash, template, inverse, visitor) {
-    // TODO: Ember 2.* uses getState()
+    // Use `state` on Ember < 2.2 and `getState()` on Ember >= 2.2
     var state = morph.getState ? morph.getState() : morph.state;
     hash.type = state.type;
     hash.property = state.property;
