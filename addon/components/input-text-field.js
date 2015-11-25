@@ -1,7 +1,7 @@
 import Ember from 'ember';
 import WrapperMixin from 'ember-easy-form/wrapper-mixin';
 
-export default Ember.TextField.extend(WrapperMixin, {\
+export default Ember.TextField.extend(WrapperMixin, {
   init: function() {
     this._super(...arguments);
     var dependentKey = 'formForModel.' + this.get('property');
