@@ -19,7 +19,6 @@ export default {
       buttonClass: ''
     }
   },
-  modulePrefix: 'appkit',
   _inputTypes: {},
   _templates: {},
   registerWrapper: function(name, wrapper) {

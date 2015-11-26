@@ -54,11 +54,10 @@ var FormInputComponent =Ember.Component.extend(WrapperMixin, {
       var values = {};
       var savedHash = this.get('savedHash');
       if (savedHash) {
-        const bindableInputOptions =  ['as', 'collection', 'optionValuePath', 'optionLabelPath',
+        const allOptions =  ['as', 'collection', 'optionValuePath', 'optionLabelPath',
                             'selection', 'multiple', 'name', 'placeholder', 'prompt', 'disabled'];
-        // var bindableInputOptions = ['placeholder', 'prompt', 'disabled'];
-        for (var j = 0; j < bindableInputOptions.length; j++) {
-          var key = bindableInputOptions[j];
+        for (var j = 0; j < allOptions.length; j++) {
+          var key = allOptions[j];
           if (savedHash[key]) {
             values[key] = savedHash[key];
           }

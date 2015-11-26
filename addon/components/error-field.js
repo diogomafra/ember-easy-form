@@ -5,7 +5,6 @@ var ErrorFieldComponent = Ember.Component.extend(WrapperMixin, {
   tagName: 'span',
   classNameBindings: ['wrapperConfig.errorClass'],
   layoutName: Ember.computed.oneWay('wrapperConfig.errorTemplate'),
-  property: null,
 
   errorText: Ember.computed('errors.[]', function() {
     var errors = this.get('errors');
