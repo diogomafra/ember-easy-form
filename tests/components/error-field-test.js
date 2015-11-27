@@ -57,7 +57,7 @@ test('uses the wrapper config', function(assert) {
 });
 
 test('uses the defined template name', function(assert) {
-  this.container.register('template:custom-error-template', hbs`My custom error | {{view.errorText}}`);
+  this.register('template:custom-error-template', hbs`My custom error | {{errorText}}`);
   config.registerWrapper('my_wrapper', {errorTemplate: 'custom-error-template'});
 
   this.render(hbs`{{#form-for model wrapper="my_wrapper"}}{{error-field "firstName"}}{{/form-for}}`);

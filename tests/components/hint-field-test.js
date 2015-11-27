@@ -19,13 +19,13 @@ skip('does not render a hint field without custom text', function(assert) {
 
 test('uses the wrapper config', function(assert) {
   config.registerWrapper('my_wrapper', {hintClass: 'my-hint'});
-  this.render(hbs`{{#form-for controller wrapper="my_wrapper"}}{{hint-field "firstName" text="Some text"}}{{/form-for}}`);
+  this.render(hbs`{{#form-for this wrapper="my_wrapper"}}{{hint-field "firstName" text="Some text"}}{{/form-for}}`);
   assert.ok(this.$().find('span.my-hint').get(0), 'hintClass not defined');
 });
 
 test('uses the defined template name', function(assert) {
-  this.container.register('template:custom-hint-template', hbs`My custom hint | {{view.hintText}}`);
+  this.register('template:custom-hint-template', hbs`My custom hint | {{hintText}}`);
   config.registerWrapper('my_wrapper', {hintTemplate: 'custom-hint-template'});
-  this.render(hbs`{{#form-for controller wrapper="my_wrapper"}}{{hint-field "firstName" text="My text"}}{{/form-for}}`);
+  this.render(hbs`{{#form-for this wrapper="my_wrapper"}}{{hint-field "firstName" text="My text"}}{{/form-for}}`);
   assert.equal(this.$().text(), "My custom hint | My text");
 });
