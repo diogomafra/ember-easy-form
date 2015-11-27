@@ -8,9 +8,7 @@ const {set} = Ember;
 var model;
 
 var validateFunction = function() {
-  var promise = new Ember.Deferred();
-  promise.resolve();
-  return promise;
+  return Ember.RSVP.resolve();
 };
 
 moduleForComponent('form-for', 'Integration | Component | form for', {
@@ -71,9 +69,7 @@ test('submitting with valid model calls submit action on controller', function(a
 test('submitting with valid controller calls submit action on controller', function(assert) {
   model.reopen({
     validate: function() {
-      var promise = new Ember.Deferred();
-      promise.resolve();
-      return promise;
+      return Ember.RSVP.resolve();
     }
   });
   Ember.run(function() {
